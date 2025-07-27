@@ -73,6 +73,8 @@ export default function Login() {
               Sign Up
             </a>
           </p>
+          <p className="mt-2 text-black">Forgot your password? <a href="#" className="text-blue-500 hover:underline">Reset Here</a></p>
+          <p className="mt-2 text-black"><a href="\" className="text-blue-500 hover:underline">Back</a></p>
         </div>
       </form>
       <SuccessModal isOpen={isSuccess} />
