@@ -2,12 +2,11 @@
 import React from "react";
 import Link from "next/link";
 import { useRouter, usePathname } from "next/navigation";
-import { HomeIcon, CalendarIcon, PlusCircleIcon, UserIcon, ArrowRightOnRectangleIcon } from '@heroicons/react/24/outline';
+import { HomeIcon, CalendarIcon, UserIcon, ArrowRightOnRectangleIcon } from '@heroicons/react/24/outline';
 
 const userOptions = [
   { label: "Dashboard", href: "/user/dashboard", icon: HomeIcon },
   { label: "My Events", href: "/user/events", icon: CalendarIcon },
-  { label: "Create Event", href: "/events/create", icon: PlusCircleIcon },
   { label: "My Profile", href: "/user/profile", icon: UserIcon },
   { label: "Logout", action: "logout", icon: ArrowRightOnRectangleIcon },
 ];
