@@ -1,13 +1,13 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import Image from 'next/image';
-import LOGO from '@/app/logo/logo.png';
+import { useState } from "react";
+import Image from "next/image";
+import LOGO from "@/app/logo/logo.png";
 import SuccessModal from "@/components/SuccessModal";
 
 export default function Login() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [isSuccess, setIsSuccess] = useState(false);
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -39,7 +39,7 @@ export default function Login() {
             placeholder="Email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="w-full p-2 border rounded-md focus:ring focus:ring-blue-300"
+            className="w-full p-2 border rounded-md focus:ring focus:ring-blue-300 text-black"
             required
             aria-required="true"
           />
@@ -54,7 +54,7 @@ export default function Login() {
             placeholder="Password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            className="w-full p-2 border rounded-md focus:ring focus:ring-blue-300"
+            className="w-full p-2 border rounded-md focus:ring focus:ring-blue-300 text-black"
             required
             aria-required="true"
           />
@@ -66,6 +66,14 @@ export default function Login() {
         >
           Log In
         </button>
+        <div className="text-center">
+          <p className="mt-4 text-black">
+            Don&apos;t have an account?{" "}
+            <a href="/user/register" className="text-blue-500 hover:underline">
+              Sign Up
+            </a>
+          </p>
+        </div>
       </form>
       <SuccessModal isOpen={isSuccess} />
     </div>

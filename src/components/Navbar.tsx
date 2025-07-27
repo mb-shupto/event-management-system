@@ -27,8 +27,9 @@ const Navbar: React.FC = () => {
           <Link href="/user/events" className="text-white hover:text-blue-600">Events</Link>
           {typeof window !== 'undefined' && window.location.pathname.startsWith('/user') ? (
             <>
-              <Link href="/user/dashboard" className="text-white hover:text-blue-600">Dashboard</Link>
-              <button onClick={handleLogout} className="text-white hover:text-blue-600">Logout</button>
+              <Link href="/public/about-us" className="text-white hover:text-blue-600">About Us</Link>
+              <Link href="/public/contact" className="text-white hover:text-blue-600">Contact</Link>
+              <Link href="/user/login" className="text-white hover:text-blue-600">Login</Link>
             </>
           ) : (
             <>
