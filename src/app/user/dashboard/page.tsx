@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import logo from "@/app/logo/event-management-logo.png";
+import bLogo from "@/app/logo/event-management-logo-black.png"
 import EventCard from "@/components/EventCard";
 import UserNavBar from "@/components/UserNavBar";
 import { UserCircleIcon, CalendarIcon } from "@heroicons/react/24/outline";
@@ -36,7 +37,7 @@ export default function DashboardPage() {
       <div className="mt-2">
         <div className="mb-4 flex items-center">
           <Image
-            src={logo}
+            src={bLogo}
             alt="Event Management System Logo"
             width={50}
             height={50}
