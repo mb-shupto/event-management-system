@@ -1,7 +1,6 @@
 "use client";
 
 import Image from "next/image";
-import logo from "@/app/logo/event-management-logo.png";
 import bLogo from "@/app/logo/event-management-logo-black.png"
 import EventCard from "@/components/EventCard";
 import UserNavBar from "@/components/UserNavBar";
