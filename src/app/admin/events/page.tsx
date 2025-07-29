@@ -4,10 +4,14 @@ import Image from "next/image";
 import LOGO from "@/app/Logo/logo.png";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import Event from "@/types/events";
+import { Event } from "@/types/events";
+import DeleteEventModal from "@/components/DeleteEventModal";
+
 
 export default function AdminEventsPage() {
   const [events, setEvents] = useState<Event[]>([]);
+  const [showModal, setShowModal] = useState(false);
+  const [eventToDelete, setEventToDelete] = useState<number | null>(null);
 
   useEffect(() => {
     fetch("http://localhost:3001/api/events")
@@ -16,8 +20,24 @@ export default function AdminEventsPage() {
       .catch((error) => console.error("Error fetching events:", error));
   }, []);
 
+  const handleDelete = async (id: number) => {
+    try {
+      const response = await fetch(`http://localhost:3001/api/events/${id}`, {
+        method: "DELETE",
+      });
+      if (response.ok) {
+        setEvents(events.filter((event) => event.id !== id));
+      } else {
+        const errorText = await response.text();
+        console.error("Delete error:", response.status, errorText);
+      }
+    } catch (error) {
+      console.error("Network error:", error);
+    }
+  };
+
   return (
-    <div className="p-4 bg-gradient-to-r from-blue-50 to-white min-h-screen">
+    <div className="p-4 bg-gradient-to-r from-blue-50 to-white min-h-screen text-black relative">
       <div className="mt-4">
         <div className="mb-6 flex items-center">
           <Image
@@ -31,7 +51,7 @@ export default function AdminEventsPage() {
         </div>
       </div>
       <div className="bg-white p-6 rounded-lg shadow-lg">
-        <Link href="/admin/events/create" className="mb-4 inline-block text-blue-600 hover:underline">
+        <Link href="/admin/create-event" className="mb-4 inline-block text-blue-600 hover:underline">
           Create New Event
         </Link>
         <div className="mt-4 space-y-4">
@@ -41,15 +61,31 @@ export default function AdminEventsPage() {
               <p>Type: {event.type}</p>
               <p>Date: {new Date(event.date).toLocaleDateString()}</p>
               <div className="mt-2">
-                <Link href={`/admin/events/${event.id}`} className="text-blue-600 hover:underline mr-4">
+                <Link href={`/admin/event-details/${event.id}`} className="text-blue-600 hover:underline mr-4">
                   View
                 </Link>
-                <button className="text-red-600 hover:underline">Delete</button>
+                <button
+                  onClick={() => {
+                    setEventToDelete(event.id);
+                    setShowModal(true);
+                  }}
+                  className="text-red-600 hover:underline"
+                >
+                  Delete
+                </button>
               </div>
             </div>
           ))}
         </div>
       </div>
-    </div>
-  );
+  {showModal && eventToDelete && events.find((event) => event.id === eventToDelete) && (
+  <DeleteEventModal
+  event={events.find((event) => event.id === eventToDelete) ?? {} as Event}
+  eventId={eventToDelete}
+  onClose={() => setShowModal(false)}
+  onDelete={handleDelete}
+/>
+)}
+  </div>
+  )
 }
