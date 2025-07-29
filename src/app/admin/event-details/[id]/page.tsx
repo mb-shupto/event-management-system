@@ -53,7 +53,7 @@ export default function AdminEventDetailPage() {
         <p><strong>Description:</strong> {event.description}</p>
         <p><strong>Organizer:</strong> {event.organizer}</p>
         <div className="mt-4">
-          <Link href={`/admin/events/edit/${id}`} className="text-green-600 hover:underline mr-4">
+          <Link href={`/admin/edit-event/${id}`} className="text-green-600 hover:underline mr-4">
             Edit
           </Link>
           <Link href="/admin/events" className="text-blue-600 hover:underline">
