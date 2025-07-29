@@ -155,7 +155,7 @@ export default function CreateEventPage() {
             />
           </div>
           <div>
-            <label htmlFor="organizer" className="block text-sm font-medium text-gray-700">
+            <label htmlFor="organizer" className="block text-sm font-medium  text-gray-700">
               Organizer
             </label>
             <input
@@ -167,12 +167,24 @@ export default function CreateEventPage() {
               placeholder="Enter organizer name"
             />
           </div>
-          <button
+
+          <div className="block text-sm font-medium mt-4 center gap-5">
+            <div className="flex justify-center gap-4">
+              <button
             type="submit"
             className="w-full bg-blue-600 text-white p-2 rounded-md hover:bg-blue-700"
           >
             Create Event
           </button>
+          </div>           
+          <div className="flex justify-center gap-4 p-2">
+            <button className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded"
+              onClick={() => router.push("/admin/events")}
+              >
+              Cancel  
+            </button>
+            </div>        
+          </div>
         </form>
       </div>
     </div>
