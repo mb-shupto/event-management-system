@@ -2,53 +2,35 @@
 
 import Image from "next/image";
 import LOGO from "@/app/Logo/logo.png";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import Link from "next/link";
 import EventCard from "@/components/EventCard";
 
-const allEvents = [
-  {
-    id: 1,
-    title: "AI Revolution Seminar",
-    type: "seminar",
-    date: "2025-08-01",
-    description: "Explore the future of AI technology.",
-  },
-  {
-    id: 2,
-    title: "Campus Music Fest",
-    type: "music show",
-    date: "2025-08-10",
-    description: "Live performances by local bands.",
-  },
-  {
-    id: 3,
-    title: "CodeSprint Hackathon",
-    type: "hackathon",
-    date: "2025-08-15",
-    description: "24-hour coding challenge for students.",
-  },
-  {
-    id: 4,
-    title: "Debate Championship",
-    type: "debate",
-    date: "2025-08-20",
-    description: "Compete in a national debate contest.",
-  },
-  {
-    id: 5,
-    title: "Design Workshop",
-    type: "workshop",
-    date: "2025-08-25",
-    description: "Learn UI/UX design fundamentals.",
-  },
-];
+interface Event {
+    id: number;
+    title: string;
+    type: string;
+    date: string;
+    description: string;
+}
 
 export default function EventsPage() {
+  const [events, setEvents] = useState<Event[]>([]);
   const [selectedCategory, setSelectedCategory] = useState("all");
 
+  useEffect(() => {
+    fetch("http://localhost:3001/api/events")
+      .then((response) => response.json())
+      .then((data) => setEvents(data))
+      .catch((error) => console.error("Error fetching events:", error));
+  }, []);
+
   const filteredEvents = selectedCategory === "all"
-    ? allEvents
-    : allEvents.filter((event) => event.type === selectedCategory);
+    ? events
+    : events.filter((event) => event.type === selectedCategory);
+
+  // Mock admin check (replace with real authentication later)
+  const isAdmin = true; // Change to false or use auth logic
 
   return (
     <div className="p-4 bg-gradient-to-r from-green-50 to-white min-h-screen">
@@ -84,6 +66,16 @@ export default function EventsPage() {
           <option value="workshop">Workshop</option>
         </select>
       </div>
+
+      {isAdmin && (
+        <div className="mb-6">
+          <Link href="/admin/events/create">
+            <button className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700">
+              Add Events
+            </button>
+          </Link>
+        </div>
+      )}
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {filteredEvents.map((event) => (
