@@ -22,14 +22,14 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <Navbar />
+        <Navbar></Navbar>
         <div className="flex flex-1">
           {showSidebar && (
             <aside className="w-64 bg-[#232f3e] text-white p-4 min-h-screen fixed">
               <Sidebar />
             </aside>
           )}
-          <main className={`flex-1 p-6 ${showSidebar ? 'ml-64' : ''}`}>
+          <main className={`flex-1 p-0 ${showSidebar ? 'ml-64' : ''}`}>
             {children}
           </main>
         </div>
