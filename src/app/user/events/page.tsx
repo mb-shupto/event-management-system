@@ -1,39 +1,38 @@
 "use client";
 
 import Image from "next/image";
-import LOGO from "@/app/Logo/logo.png";
+import LOGO from "../../Logo/logo.png";
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import EventCard from "@/components/EventCard";
-
-interface Event {
-    id: number;
-    title: string;
-    type: string;
-    date: string;
-    description: string;
-}
+import { Event } from '@/types/events';
 
 export default function EventsPage() {
   const [events, setEvents] = useState<Event[]>([]);
   const [selectedCategory, setSelectedCategory] = useState("all");
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    setLoading(true);
     fetch("http://localhost:3001/api/events")
       .then((response) => response.json())
-      .then((data) => setEvents(data))
-      .catch((error) => console.error("Error fetching events:", error));
-  }, []);
+      .then((data) => {
+        setEvents(data);
+        setLoading(false);
+      })
+      .catch((error) => {
+        console.error("Error fetching events:", error);
+        setLoading(false);
+      });
+  }, []); // Empty dependency array to fetch only on mount
 
   const filteredEvents = selectedCategory === "all"
     ? events
     : events.filter((event) => event.type === selectedCategory);
 
-  // Mock admin check (replace with real authentication later)
-  const isAdmin = true; // Change to false or use auth logic
+  const isAdmin = false; // Mock non-admin user
 
   return (
-    <div className="p-4 bg-gradient-to-r from-green-50 to-white min-h-screen">
+    <div className="p-4 bg-gradient-to-r from-green-50 to-white min-h-screen text-black">
       <div className="mt-4">
         <div className="mb-6 flex items-center">
           <Image
@@ -56,7 +55,7 @@ export default function EventsPage() {
           value={selectedCategory}
           onChange={(e) => setSelectedCategory(e.target.value)}
           className="w-full p-2 border border-gray-300 rounded-md focus:ring focus:ring-blue-300"
-          aria-label="Select event category to filter"
+          disabled={loading}
         >
           <option value="all">All Categories</option>
           <option value="seminar">Seminar</option>
@@ -77,11 +76,28 @@ export default function EventsPage() {
         </div>
       )}
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {filteredEvents.map((event) => (
-          <EventCard key={event.id} {...event} />
-        ))}
-      </div>
+      {loading ? (
+        <p className="text-center text-gray-600">Loading events...</p>
+      ) : filteredEvents.length > 0 ? (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          {filteredEvents.map((event) => (
+            <div key={event.id} className="p-4 border rounded-md shadow-md">
+              <h3 className="text-lg font-semibold">{event.title}</h3>
+              <p>Type: {event.type}</p>
+              <p>Date: {new Date(event.date).toLocaleDateString()}</p>
+              <p>Time: {event.time}</p>
+              <p>Location: {event.location}</p>
+              <p>Description: {event.description}</p>
+              <p>Organizer: {event.organizer}</p>
+              <Link href={`/user/event-details/${event.id}`} className="text-blue-600 hover:underline mt-2 block">
+                View Details
+              </Link>
+            </div>
+          ))}
+        </div>
+      ) : (
+        <p className="text-center text-gray-600">No events available.</p>
+      )}
     </div>
   );
 }
