@@ -33,6 +33,8 @@ let events = [
   },
 ];
 
+let myEvents = {}; // Store events per userId (mock in-memory storage)
+
 app.get("/api/events", (req, res) => {
   res.json(events);
 });
@@ -70,6 +72,23 @@ app.delete("/api/events/:id", (req, res) => {
   } else {
     res.status(404).json({ message: "Event not found" });
   }
+});
+
+app.post("/api/my-events", (req, res) => {
+  const { eventId, userId } = req.body;
+  if (!eventId || !userId) {
+    return res.status(400).json({ message: "eventId and userId are required" });
+  }
+  if (!myEvents[userId]) myEvents[userId] = new Set();
+  myEvents[userId].add(eventId);
+  res.status(201).json({ message: "Event added to My Events", eventId, userId });
+});
+
+app.get("/api/my-events", (req, res) => {
+  const userId = req.query.userId ? parseInt(req.query.userId) : 1;
+  const userEvents = myEvents[userId] ? Array.from(myEvents[userId]) : [];
+  const eventsList = userEvents.map((id) => events.find((e) => e.id === id)).filter(Boolean);
+  res.json(eventsList);
 });
 
 app.listen(port, () => {
