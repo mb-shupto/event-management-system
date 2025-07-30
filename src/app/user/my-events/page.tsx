@@ -1,83 +1,59 @@
 "use client";
 
-import EventCard from "@/components/EventCard";
-import UserNavBar from "@/components/UserNavBar";
-import {  CalendarIcon } from "@heroicons/react/24/outline";
+import Image from "next/image";
+import LOGO from "../../Logo/logo.png";
 import { useState, useEffect } from "react";
+import { Event } from '@/types/events';
+import { Toast } from "@/components/Toast";
 
-
-const allEvents = [
-  {
-    id: 1,
-    title: "AI Revolution Seminar",
-    type: "seminar",
-    date: "2025-08-01",
-    description: "Explore the future of AI technology.",
-  },
-  {
-    id: 2,
-    title: "Campus Music Fest",
-    type: "music show",
-    date: "2025-08-10",
-    description: "Live music night.",
-  },
-  {
-    id: 3,
-    title: "CodeSprint Hackathon",
-    type: "hackathon",
-    date: "2025-08-15",
-    description: "24-hour coding challenge for students.",
-  },
-];
-
-export default function DashboardPage() {
-  const [myEvents, setMyEvents] = useState<number[]>([]);
+export default function MyEventsPage() {
+  const [myEvents, setMyEvents] = useState<Event[]>([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Simulate loading myEvents from localStorage or context (replace with real data)
-    const savedEvents = localStorage.getItem("myEvents");
-    if (savedEvents) setMyEvents(JSON.parse(savedEvents));
+    setLoading(true);
+    fetch("http://localhost:3001/api/my-events?userId=1") // Mock userId
+      .then((response) => response.json())
+      .then((data) => {
+        setMyEvents(data);
+        setLoading(false);
+      })
+      .catch((error) => {
+        console.error("Error fetching my events:", error);
+        setLoading(false);
+      });
   }, []);
 
-  useEffect(() => {
-    // Save myEvents to localStorage (mock persistence)
-    localStorage.setItem("myEvents", JSON.stringify(myEvents));
-  }, [myEvents]);
-
-  const filteredMyEvents = allEvents.filter((event) => myEvents.includes(event.id));
-
   return (
-    <div>
-      <UserNavBar className="mb-2" />
-      {/* My Events */}
-      <div className="bg-white text-black p-2 rounded-md shadow-md mb-4">
-        <h2 className="text-lg font-semibold flex items-center mb-2">
-          <CalendarIcon className="w-6 h-6 mr-2 text-blue-600" />
-          My Events
-        </h2>
-        {filteredMyEvents.length > 0 ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
-            {filteredMyEvents.map((event) => (
-              <EventCard key={event.id} {...event} />
-            ))}
-          </div>
-        ) : (
-          <p className="text-gray-600">No events added yet. Check the Events page to add some!</p>
-        )}
-      </div>
-
-      {/* Upcoming Events */}
-      <div className="bg-white text-black p-2 rounded-md shadow-md mb-4">
-        <h2 className="text-lg font-semibold flex items-center mb-2">
-          <CalendarIcon className="w-6 h-6 mr-2 text-blue-600" />
-          Upcoming Events
-        </h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
-          {allEvents.map((event) => (
-            <EventCard key={event.id} {...event} />
-          ))}
+    <div className="p-4 bg-gradient-to-r from-green-50 to-white min-h-screen">
+      <div className="mt-4">
+        <div className="mb-6 flex items-center">
+          <Image
+            src={LOGO}
+            alt="Event Management System Logo"
+            width={50}
+            height={50}
+            className="mr-2"
+          />
+          <h1 className="text-3xl font-bold text-gray-900">My Events</h1>
         </div>
       </div>
+      {loading ? (
+        <p className="text-center text-gray-600">Loading my events...</p>
+      ) : myEvents.length > 0 ? (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          {myEvents.map((event) => (
+            <div key={event.id} className="p-4 border rounded-md shadow-md">
+              <h3 className="text-lg font-semibold">{event.title}</h3>
+              <p>Type: {event.type}</p>
+              <p>Date: {new Date(event.date).toLocaleDateString()}</p>
+            </div>
+          ))}
+        </div>
+      ) : (
+        <p className="text-center text-gray-600">No events saved yet.</p>
+      )}
+      <Toast />
     </div>
   );
 }
