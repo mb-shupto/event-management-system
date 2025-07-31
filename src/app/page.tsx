@@ -2,6 +2,8 @@
 
 import Image from "next/image";
 import LOGO from "@/app/Logo/logo.png";
+import SecondNavbar from "@/components/SecondNavbar";
+import SubFooter from "@/components/SubFooter";
 
 const mockEvents = [
   { id: 1, title: "AI Seminar", type: "Seminar", date: "2025-08-01", description: "Learn AI advancements." },
@@ -11,6 +13,7 @@ const mockEvents = [
 export default function Home() {
   return (
     <div className="min-h-screen bg-gray-50 text-black">
+      <SecondNavbar></SecondNavbar>
       <main className="container mx-auto px-4 py-12">
         <div className="text-center mb-12">
           <Image src={LOGO} alt="Event Management System Logo" width={200} height={200} className="mx-auto mb-4" priority />
@@ -38,6 +41,7 @@ export default function Home() {
           </div>
         </section>
       </main>
+      <SubFooter />
     </div>
   );
 }
