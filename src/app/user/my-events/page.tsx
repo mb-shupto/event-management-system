@@ -25,7 +25,7 @@ export default function MyEventsPage() {
   }, []);
 
   return (
-    <div className="p-4 bg-gradient-to-r from-green-50 to-white min-h-screen">
+    <div className="p-4 bg-gradient-to-r from-green-50 to-white min-h-screen text-black">
       <div className="mt-4">
         <div className="mb-6 flex items-center">
           <Image
