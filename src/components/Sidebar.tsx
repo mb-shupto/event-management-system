@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useState } from "react";
-import { HomeIcon, CalendarIcon, UserIcon } from "@heroicons/react/24/outline";
+import { HomeIcon, CalendarIcon, UserIcon, ArrowLeftOnRectangleIcon } from "@heroicons/react/24/outline";
 
 const Sidebar: React.FC = () => {
   const [isOpen, setIsOpen] = useState(true); // Toggle sidebar for mobile
@@ -62,12 +62,32 @@ const Sidebar: React.FC = () => {
           </li>
           <li>
             <Link
+              href="/user/my-events"
+              className="flex items-center p-4 hover:bg-gray-700"
+              aria-label="Go to my events"
+            >
+              <CalendarIcon className="w-6 h-6 mr-2" />
+              <span className={isOpen ? "block" : "hidden"}>My Events</span>
+            </Link>
+          </li>
+          <li>
+            <Link
               href="/user/profile"
               className="flex items-center p-4 hover:bg-gray-700"
               aria-label="Go to profile"
             >
               <UserIcon className="w-6 h-6 mr-2" />
               <span className={isOpen ? "block" : "hidden"}>Profile</span>
+            </Link>
+          </li>
+          <li>
+            <Link
+              href="/user/logout"
+              className="flex items-center p-4 hover:bg-gray-700"
+              aria-label="Logout"
+            >
+              <ArrowLeftOnRectangleIcon className="w-6 h-6 mr-2" />
+              <span className={isOpen ? "block" : "hidden"}>Logout</span>
             </Link>
           </li>
         </ul>
