@@ -84,7 +84,7 @@ export default function EventDetailPage() {
         >
           Add to My Events
         </button>
-        <a href="user/events" className="text-blue-600 hover:underline mt-4 block">
+        <a href="/user/events" className="text-blue-600 hover:underline mt-4 block">
           Back to Events
         </a>
       </div>
