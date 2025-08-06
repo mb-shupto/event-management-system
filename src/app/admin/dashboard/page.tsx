@@ -28,7 +28,7 @@ export default function AdminDashboard() {
             </Link>
           </li>
           <li>
-            <Link href="/admin/events/create" className="text-blue-600 hover:underline">
+            <Link href="/admin/create-event" className="text-blue-600 hover:underline">
               Create New Event
             </Link>
           </li>
