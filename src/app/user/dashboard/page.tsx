@@ -10,19 +10,37 @@ import { UserCircleIcon, CalendarIcon } from "@heroicons/react/24/outline";
 import { useState, useEffect } from "react";
 import { Event } from "@/types/events";
 
-const mockUser = {
-  name: "John Doe",
-  role: "Student",
-  email: "john.doe@example.com",
-};
-
 export default function DashboardPage() {
   const [events, setEvents] = useState<Event[]>([]);
   const [loading, setLoading] = useState(true);
+  const [user, setUser] = useState<{ name: string; role: string; email: string } | null>(null);
+  const [userLoading, setUserLoading] = useState(true);
 
+  // Fetch user info
+  useEffect(() => {
+    setUserLoading(true);
+    fetch("http://localhost:8000/api/users/me", {
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        setUser(data.user || null);
+        setUserLoading(false);
+      })
+      .catch((err) => {
+        console.error('Error fetching user data:', err);
+        setUser(null);
+        setUserLoading(false);
+      });
+  }, []);
+
+  // Fetch events
   useEffect(() => {
     setLoading(true);
-    fetch("http://localhost:3001/api/events")
+    fetch("http://localhost:8000/api/events")
       .then((response) => response.json())
       .then((data) => {
         setEvents(data);
@@ -32,7 +50,7 @@ export default function DashboardPage() {
         console.error("Error fetching events:", error);
         setLoading(false);
       });
-  }, []); // Empty dependency array to fetch only on mount
+  }, []);
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -45,7 +63,7 @@ export default function DashboardPage() {
         <Sidebar />
 
         {/* Main Content */}
-        <div className="flex-1 ml-16 p-4 overflow-auto"> {/* ml-16 to offset sidebar width when collapsed */}
+        <div className="flex-1 ml-16 p-4 overflow-auto">
           <div className="mt-2">
             <div className="mb-4 flex items-center">
               <Image
@@ -57,21 +75,33 @@ export default function DashboardPage() {
               />
               <h1 className="text-2xl font-bold text-gray-900">User Dashboard</h1>
             </div>
-            <p className="mb-2">Welcome to your dashboard!</p>
+            <p className="mb-2 text-black">Welcome to your dashboard!</p>
           </div>
 
           {/* Custom Carousel */}
           <CustomCarousel />
 
           {/* User Profile Summary */}
-          <div className="bg-blue-100 text-black p-2 rounded-md shadow-md mb-4">
-            <h2 className="text-black font-semibold flex items-center mb-1">
+          <div className="bg-blue-100 text-black p-4 rounded-md shadow-md mb-4">
+            <h2 className="text-black font-semibold flex items-center mb-3">
               <UserCircleIcon className="w-6 h-6 mr-2 text-black" />
               Profile Summary
             </h2>
-            <p><strong>Name:</strong> {mockUser.name}</p>
-            <p><strong>Role:</strong> {mockUser.role}</p>
-            <p><strong>Email:</strong> {mockUser.email}</p>
+            {userLoading ? (
+              <p>Loading your profile...</p>
+            ) : user ? (
+              <>
+                <p className="text-lg mb-2">
+                  Hello <span className="font-bold">{user.name}</span>, welcome to your dashboard!
+                </p>
+                <div className="space-y-1">
+                  <p><strong>Role:</strong> {user.role}</p>
+                  <p><strong>Email:</strong> {user.email}</p>
+                </div>
+              </>
+            ) : (
+              <p className="text-red-600">User info not available.</p>
+            )}
           </div>
 
           {/* Upcoming Events */}
