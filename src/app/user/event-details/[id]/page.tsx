@@ -4,49 +4,78 @@ import Image from "next/image";
 import LOGO from "@/app/Logo/logo.png";
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
-import { Event } from '@/types/events';
-import { showToast, Toast } from "@/components/Toast";
+import { Event } from "@/types/events";
+
+type ToastType = {
+  message: string;
+  type: "success" | "error";
+  duration?: number;
+};
+
+const showToast = (message: string, type: "success" | "error") => {
+  const toastElement = document.createElement("div");
+  toastElement.className = `fixed bottom-4 right-4 p-3 rounded-md text-white ${type === "success" ? "bg-green-500" : "bg-red-500"}`;
+  toastElement.textContent = message;
+  document.body.appendChild(toastElement);
+  setTimeout(() => document.body.removeChild(toastElement), 3000);
+};
 
 export default function EventDetailPage() {
   const params = useParams();
   const { id } = params as { id: string };
   const [event, setEvent] = useState<Event | null>(null);
   const [loading, setLoading] = useState(true);
+  const [isRegistered, setIsRegistered] = useState(false);
+  const [isWaitlisted, setIsWaitlisted] = useState(false);
 
   useEffect(() => {
     setLoading(true);
-    fetch(`http://localhost:3001/api/events/${id}`)
-      .then((response) => {
-        if (!response.ok) throw new Error("Event not found");
-        return response.json();
-      })
-      .then((data) => {
-        setEvent(data);
+    Promise.all([
+      fetch(`http://localhost:3001/api/events/${id}`),
+      fetch(`http://localhost:3001/api/registrations?userId=1`),
+      fetch(`http://localhost:3001/api/waitlist?userId=1`),
+    ])
+      .then(([eventRes, regRes, waitRes]) =>
+        Promise.all([eventRes.json(), regRes.json(), waitRes.json()])
+      )
+      .then(([eventData, regData, waitData]) => {
+        setEvent(eventData);
+        setIsRegistered(regData.some((r: Event) => r.id === parseInt(id)));
+        setIsWaitlisted(waitData.some((w: Event) => w.id === parseInt(id)));
         setLoading(false);
       })
       .catch((error) => {
-        console.error("Error fetching event:", error);
+        console.error("Error fetching data:", error);
         setLoading(false);
       });
   }, [id]);
 
-  const handleAddToMyEvents = async () => {
+  const handleRegister = async () => {
     if (!event) return;
     setLoading(true);
     try {
-      const response = await fetch("http://localhost:3001/api/my-events", {
+      const response = await fetch("http://localhost:3001/api/registrations", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ eventId: event.id, userId: 1 }), // Mock userId, replace with auth later
+        body: JSON.stringify({ eventId: event.id, userId: 1 }),
       });
+      const data = await response.json();
       if (response.ok) {
-        showToast("Event added to My Events!", "success");
+        if (data.message === "Registered successfully") {
+          setIsRegistered(true);
+          setIsWaitlisted(false);
+          showToast("Registered successfully!", "success");
+        } else if (data.message === "Added to waitlist") {
+          setIsWaitlisted(true);
+          setIsRegistered(false);
+          showToast("Added to waitlist!", "success");
+        }
       } else {
-        showToast("Failed to add event.", "error");
+        showToast(data.message || "Registration failed.", "error");
       }
     } catch (error) {
-      console.error("Error adding to My Events:", error);
-      showToast("Error adding event.", "error");
+      console.error("Error registering:", error);
+      showToast("Registration error.", "error");
     } finally {
       setLoading(false);
     }
@@ -77,18 +106,24 @@ export default function EventDetailPage() {
         <p><strong>Location:</strong> {event.location}</p>
         <p><strong>Description:</strong> {event.description}</p>
         <p><strong>Organizer:</strong> {event.organizer}</p>
-        <button
-          onClick={handleAddToMyEvents}
-          className="mt-4 bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 disabled:bg-gray-400"
-          disabled={loading}
-        >
-          Add to My Events
-        </button>
+        <p><strong>Capacity:</strong> {event.registeredCount}/{event.capacity}</p>
+        {isRegistered ? (
+          <p className="text-green-600 mt-4">You are registered!</p>
+        ) : isWaitlisted ? (
+          <p className="text-yellow-600 mt-4">You are on the waitlist.</p>
+        ) : (
+          <button
+            onClick={handleRegister}
+            className="mt-4 bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 disabled:bg-gray-400"
+            disabled={loading}
+          >
+            {event.registeredCount >= event.capacity ? "Join Waitlist" : "Register"}
+          </button>
+        )}
         <a href="/user/events" className="text-blue-600 hover:underline mt-4 block">
           Back to Events
         </a>
       </div>
-      <Toast />
     </div>
   );
 }
