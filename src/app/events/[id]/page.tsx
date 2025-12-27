@@ -4,7 +4,6 @@ import { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
 import { doc, getDoc } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
-import { useAuth } from '@/lib/authContext';
 import Image from 'next/image';
 import ProtectedRoute from '@/components/ProtectedRoute';
 import { CalendarIcon, MapPinIcon } from '@heroicons/react/24/outline';
@@ -30,7 +29,6 @@ interface Event {
 export default function EventDetail() {
     const params = useParams();
     const { id } = params;
-    const { user } = useAuth();
     const [event, setEvent] = useState<Event | null>(null);
     const [loading, setLoading] = useState(true);
     const [selectedTier, setSelectedTier] = useState<TicketTier | null>(null);
@@ -53,8 +51,6 @@ export default function EventDetail() {
 
         fetchEvent();
     }, [id]);
-
-    const getRemainingTickets = (tier: TicketTier) => tier.total - tier.sold;
 
     if (loading) {
         return (

@@ -1,4 +1,3 @@
-/* eslint-disable @next/next/no-img-element */
 'use client';
 
 import { useState } from 'react';
@@ -51,9 +50,10 @@ export default function AdminLoginPage() {
 		try {
 			await loginWithEmail(email, password);
 			await verifyAdminAndRoute();
-		} catch (err: any) {
-			setError(err?.message || 'Admin login failed');
-		} finally {
+		} catch (error) {
+  console.error(error);
+  setError((error as Error).message || 'An error occurred');
+} finally {
 			setLoading(false);
 		}
 	};
@@ -65,9 +65,10 @@ export default function AdminLoginPage() {
 		try {
 			await loginWithGoogle();
 			await verifyAdminAndRoute();
-		} catch (err: any) {
-			setError(err?.message || 'Google login failed');
-		} finally {
+		}catch (error) {
+  console.error(error);
+  setError((error as Error).message || 'An error occurred');
+}finally {
 			setLoading(false);
 		}
 	};

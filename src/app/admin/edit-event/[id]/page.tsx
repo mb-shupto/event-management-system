@@ -86,9 +86,10 @@
               ? loadedTiers
               : [{ name: "General", price: 0, total: 100, sold: 0 }],
           );
-        } catch (err: any) {
-          setError(err?.message || "Failed to fetch event");
-        } finally {
+        } catch (error) {
+  console.error(error);
+  setError((error as Error).message || 'An error occurred');
+} finally {
           setLoading(false);
         }
       };
@@ -136,9 +137,10 @@
         });
 
         router.push("/admin/events");
-      } catch (err: any) {
-        setError(err?.message || "Failed to update event");
-      } finally {
+      } catch (error) {
+  console.error(error);
+  setError((error as Error).message || 'An error occurred');
+} finally {
         setSaving(false);
       }
     };

@@ -2,10 +2,10 @@
 
 import { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
-import { doc, getDoc, updateDoc, deleteDoc } from 'firebase/firestore';
+import { doc, getDoc, deleteDoc } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
-import { useAuth } from '@/lib/authContext';
 import ProtectedRoute from '@/components/ProtectedRoute';
+import Image from 'next/image';
 
 interface TicketTier {
   name: string;
@@ -27,10 +27,8 @@ interface Event {
 export default function AdminEventDetail() {
   const params = useParams();
   const { id } = params;
-  const { user } = useAuth();
   const [event, setEvent] = useState<Event | null>(null);
   const [loading, setLoading] = useState(true);
-  const [editing, setEditing] = useState(false);
 
   useEffect(() => {
     const fetchEvent = async () => {
@@ -50,17 +48,20 @@ export default function AdminEventDetail() {
       // Redirect to events list
     }
   };
-
-  const handleUpdate = async () => {
-    // Update logic here
-  };
-
   if (loading) {
     return <p>Loading event...</p>;
   }
 
   if (!event) {
     return <p>Event not found.</p>;
+  }
+
+  function setEditing(isEditing: boolean): void {
+    if (!isEditing) return;
+
+    // Simple client-side navigation to an edit page for this event.
+    // (No hooks needed here; safe even though this is below early returns.)
+    window.location.assign(`/admin/events/${id}/edit`);
   }
 
   return (
@@ -70,7 +71,13 @@ export default function AdminEventDetail() {
         <p>Date: {event.date}</p>
         <p>Location: {event.location}</p>
         <p>{event.description}</p>
-        <img src={event.imageUrl} alt={event.title} />
+        <Image
+          src={event.imageUrl || '/placeholder.jpg'}
+          alt={event.title}
+          width={800}
+          height={400}
+          className="w-full h-64 object-cover rounded"
+        />
         <h2>Ticket Tiers</h2>
         {event.ticketTiers.map((tier) => (
           <div key={tier.name}>

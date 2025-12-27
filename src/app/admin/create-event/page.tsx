@@ -4,6 +4,7 @@ import Image from "next/image";
 import LOGO from "@/app/logo/logo.png";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import Link from 'next/link';
 
 
 const showToast = (message: string, type: "success" | "error") => {
@@ -171,9 +172,9 @@ export default function CreateEventPage() {
             Create Event
           </button>
         </form>
-        <a href="/admin/dashboard" className="text-blue-600 hover:underline mt-4 block">
-          Back to Admin Dashboard
-        </a>
+        <Link href="/admin/dashboard" className="text-blue-600 hover:underline mt-4 block">
+          <button>Back to Admin Dashboard</button>
+        </Link>
       </div>
     </div>
   );

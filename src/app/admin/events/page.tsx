@@ -1,11 +1,12 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { collection, addDoc, onSnapshot, doc, updateDoc, deleteDoc, query, orderBy } from 'firebase/firestore';
+import { collection, addDoc, onSnapshot, doc, deleteDoc, query, orderBy } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
 import { useAuth } from '@/lib/authContext';
 import ProtectedRoute from '@/components/ProtectedRoute';
 import { useRouter } from 'next/navigation';
+
 
 interface TicketTier {
   name: string;
@@ -25,10 +26,11 @@ interface Event {
 }
 
 export default function AdminEvents() {
-  const { userProfile, user } = useAuth();
+  const { userProfile, user, loading: authLoading } = useAuth();
   const router = useRouter();
   const [events, setEvents] = useState<Event[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   // Form state
   const [title, setTitle] = useState('');
@@ -38,21 +40,39 @@ export default function AdminEvents() {
   const [imageUrl, setImageUrl] = useState('');
   const [tiers, setTiers] = useState<TicketTier[]>([{ name: 'General', price: 10, total: 100, sold: 0 }]);
 
+
   useEffect(() => {
-    if (!user) return;
-
-    const q = query(collection(db, 'events'), orderBy('date'));
-
-    const unsubscribe = onSnapshot(q, (snapshot) => {
-      const eventsData: Event[] = [];
-      snapshot.forEach((doc) => {
-        eventsData.push({ id: doc.id, ...doc.data() } as Event);
-      });
-      setEvents(eventsData);
+    if (!user) {
       setLoading(false);
-    });
+      return;
+    }
 
-    return () => unsubscribe();
+    try {
+      const q = query(collection(db, 'events'), orderBy('date'));
+
+      const unsubscribe = onSnapshot(
+        q,
+        (snapshot) => {
+          const eventsData: Event[] = [];
+          snapshot.forEach((doc) => {
+            eventsData.push({ id: doc.id, ...doc.data() } as Event);
+          });
+          setEvents(eventsData);
+          setLoading(false);
+        },
+        (err) => {
+          console.error('Error fetching events:', err);
+          setError('Failed to load events');
+          setLoading(false);
+        }
+      );
+
+      return () => unsubscribe();
+    } catch (err) {
+      console.error('Error setting up listener:', err);
+      setError('Failed to set up event listener');
+      setLoading(false);
+    }
   }, [user]);
 
   const addTier = () => {
@@ -68,6 +88,10 @@ export default function AdminEvents() {
   const removeTier = (index: number) => {
     setTiers(tiers.filter((_, i) => i !== index));
   };
+  // Role check - show early if not authorized
+  if (!authLoading && userProfile?.role !== 'organizer' && userProfile?.role !== 'admin') {
+    return <p className="text-red-600 p-6">Access Denied: Only organizers and admins can manage events.</p>;
+  }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -102,19 +126,29 @@ export default function AdminEvents() {
 
   const handleDelete = async (id: string) => {
     if (confirm('Delete this event? This cannot be undone.')) {
-      await deleteDoc(doc(db, 'events', id));
+      try {
+        await deleteDoc(doc(db, 'events', id));
+      } catch (error) {
+        console.error('Error deleting event:', error);
+        alert('Failed to delete event');
+      }
     }
   };
 
-  // Role check
-  if (userProfile?.role !== 'organizer' && userProfile?.role !== 'admin') {
-    return <p>Access Denied</p>;
+  if (authLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <p className="text-gray-600">Loading...</p>
+      </div>
+    );
   }
 
   return (
     <ProtectedRoute>
       <div className="max-w-6xl mx-auto p-6">
         <h1 className="text-4xl font-bold text-white mb-8">Admin: Manage Events</h1>
+
+        {error && <p className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">{error}</p>}
 
         {/* Existing Events */}
         <h2 className="text-3xl font-bold text-black mb-6">Current Events</h2>

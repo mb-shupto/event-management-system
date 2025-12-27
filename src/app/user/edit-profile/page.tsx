@@ -47,9 +47,10 @@ export default function EditProfilePage() {
         setSuccess(false);
         router.push('/user/profile');
       }, 3000);
-    } catch (err: any) {
-      setError(err.message || "Failed to update profile");
-    } finally {
+    } catch (error) {
+  console.error(error);
+  setError((error as Error).message || 'An error occurred');
+} finally {
       setLoading(false);
     }
   };

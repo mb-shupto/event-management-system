@@ -147,12 +147,13 @@ export default function AdminDashboard() {
         tierPrice: '0',
         tierTotal: '100',
       });
-    } catch (err: any) {
-      setCreateError(err?.message || 'Failed to create event');
-    } finally {
-      setIsCreating(false);
-    }
-  };
+  } catch (error) {
+    console.error(error);
+    setCreateError((error as Error).message || 'An error occurred');
+  } finally {
+    setIsCreating(false);
+  }
+};
 
   const salesData = {
     labels: events.map(e => e.title),

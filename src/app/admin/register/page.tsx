@@ -1,4 +1,3 @@
-/* eslint-disable @next/next/no-img-element */
 'use client';
 
 import { useState } from 'react';
@@ -41,9 +40,10 @@ export default function AdminRegisterPage() {
 			);
 
 			router.push('/admin/dashboard');
-		} catch (err: any) {
-			setError(err?.message || 'Admin registration failed');
-		} finally {
+		} catch (error) {
+  console.error(error);
+  setError((error as Error).message || 'An error occurred');
+}finally {
 			setLoading(false);
 		}
 	};
