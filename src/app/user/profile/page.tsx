@@ -1,23 +1,36 @@
-"use client";
+'use client';
 
-import Image from "next/image";
-import LOGO from "@/app/Logo/logo.png";
-import Link from "next/link";
+import { useEffect, useState } from 'react';
+import Link from 'next/link';
+import { doc, getDoc } from 'firebase/firestore';
+import { db } from '@/lib/firebase';
+import { useAuth } from '@/lib/authContext';
+import Image from 'next/image';
+import LOGO from "@/app/logo/logo.png";
 import { UserCircleIcon, PencilSquareIcon } from "@heroicons/react/24/outline";
 import UserNavBar from "@/components/UserNavBar";
 
-const mockUser = {
-  name: "John Doe",
-  role: "Student",
-  email: "john.doe@example.com",
-  gender: "male",
-  joined: "2025-07-01",
-  department: "Computer Science",
-};
-
 export default function ProfilePage() {
-  return (<div>
-    <nav> <UserNavBar className="mb-2" /></nav> 
+  const { user, userProfile } = useAuth();
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    if (userProfile) {
+      setLoading(false);
+    }
+  }, [userProfile]);
+
+  if (loading) {
+    return <div>Loading profile...</div>;
+  }
+
+  if (!userProfile) {
+    return <div>Profile not found.</div>;
+  }
+
+  return (
+    <div>
+      <nav> <UserNavBar className="mb-2" /></nav> 
       <div className="p-4">
         <div className="mt-4">
           <div className="mb-4 flex items-center">
@@ -36,16 +49,16 @@ export default function ProfilePage() {
           <div className="flex items-center mb-3">
             <UserCircleIcon className="w-16 h-16 text-gray-400 mr-4" />
             <div>
-              <h2 className="text-xl font-semibold">{mockUser.name}</h2>
-              <p className="text-gray-600">Joined: {mockUser.joined}</p>
+              <h2 className="text-xl font-semibold">{userProfile.name}</h2>
+              <p className="text-gray-600">Joined: {new Date(userProfile.createdAt.seconds * 1000).toLocaleDateString()}</p>
             </div>
           </div>
           <div className="space-y-2">
             <p>
-              <strong>Role:</strong> {mockUser.role}
+              <strong>Role:</strong> {userProfile.role}
             </p>
             <p>
-              <strong>Email:</strong> {mockUser.email}
+              <strong>Email:</strong> {userProfile.email}
             </p>
           </div>
           <div className="mt-4 flex center gap-1">
@@ -56,12 +69,12 @@ export default function ProfilePage() {
               <PencilSquareIcon className="w-5 h-5 mr-2" />
               Edit Profile
             </Link>
-            <a href="/user/dashboard"><button className="mt-4 inline-flex items-center bg-red-600 text-white px-3 py-2 rounded-md hover:bg-red-700"
-            > Back
+            <a href="/user/dashboard"><button className="mt-4 inline-flex items-center bg-red-600 text-white px-3 py-2 rounded-md hover:bg-red-700">
+              Back
             </button></a>
           </div>
         </div>
       </div>
-  </div>
+    </div>
   );
 }

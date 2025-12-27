@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import LOGO from "../../Logo/logo.png";
+import LOGO from "@/app/logo/logo.png";
 import { useState, useEffect } from "react";
 import { Event } from "@/types/events";
 import { Toast } from "@/components/Toast";

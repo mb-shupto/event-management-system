@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import LOGO from "@/app/Logo/logo.png";
+import LOGO from "@/app/logo/logo.png";
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import { Event } from "@/types/events";
@@ -84,6 +84,9 @@ export default function EventDetailPage() {
   if (loading) return <p className="text-center text-gray-600">Loading event details...</p>;
   if (!event) return <p className="text-center text-red-600">Event not found.</p>;
 
+  const registeredCount = event.registeredCount ?? 0;
+  const capacity = event.capacity ?? 0;
+
   return (
     <div className="p-4 bg-gradient-to-r from-green-50 to-white min-h-screen text-black">
       <div className="mt-4">
@@ -106,7 +109,7 @@ export default function EventDetailPage() {
         <p><strong>Location:</strong> {event.location}</p>
         <p><strong>Description:</strong> {event.description}</p>
         <p><strong>Organizer:</strong> {event.organizer}</p>
-        <p><strong>Capacity:</strong> {event.registeredCount}/{event.capacity}</p>
+        <p><strong>Capacity:</strong> {registeredCount}/{capacity}</p>
         {isRegistered ? (
           <p className="text-green-600 mt-4">You are registered!</p>
         ) : isWaitlisted ? (
@@ -117,7 +120,7 @@ export default function EventDetailPage() {
             className="mt-4 bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 disabled:bg-gray-400"
             disabled={loading}
           >
-            {event.registeredCount >= event.capacity ? "Join Waitlist" : "Register"}
+            {registeredCount >= capacity ? "Join Waitlist" : "Register"}
           </button>
         )}
         <a href="/user/events" className="text-blue-600 hover:underline mt-4 block">

@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Image from "next/image";
-import LOGO from "@/app/Logo/logo.png";
+import LOGO from "@/app/logo/logo.png";
 import SuccessModal from "@/components/SuccessModal";
 
 export default function Register() {
@@ -122,6 +122,7 @@ export default function Register() {
           >
             <option value="">Select Role</option>
             <option value="student">Student</option>
+            <option value="organizer">Organizer</option>
             <option value="faculty">Faculty</option>
             <option value="staff">Staff</option>
           </select>

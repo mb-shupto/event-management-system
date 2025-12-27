@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import LOGO from "@/app/Logo/logo.png";
+import LOGO from "@/app/logo/logo.png";
 import { EnvelopeIcon, PhoneIcon, MapPinIcon } from "@heroicons/react/24/outline";
 import { useState } from "react";
 
