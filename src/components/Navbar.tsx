@@ -1,38 +1,31 @@
 'use client';
 
 import Link from 'next/link';
-import Image from 'next/image';
-import logo from "@/app/logo/event-management-logo.png";
-import { useState } from 'react';
-import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
+import { useAuth } from '@/lib/authContext';
 
-const Navbar: React.FC = () => {
-  const [isOpen, setIsOpen] = useState(false);
-
+export default function Navbar() {
+  const { user, logout } = useAuth();
 
   return (
-    <nav className="bg-blue-400 shadow-md sticky top-0 z-50 h-20"> {/* Increased height to h-20 (80px) */}
-      <div className="container mx-auto px-4 py-6 flex items-center justify-between"> {/* Increased py-2 to py-6 (24px padding) */}
-        <Link href="/" className="text-2xl font-bold text-white flex items-center">
-          <Image src={logo} alt="Event Management System Logo" width={50} height={50} className="mr-2" /> {/* Increased logo size */}
-          Event Management
-        </Link>
-
-
-        {/* Mobile Menu Button */}
-        <div className="md:hidden flex items-center">
-          <button
-            onClick={() => setIsOpen(!isOpen)}
-            className="p-2 text-gray-700 hover:text-blue-600 focus:outline-none"
-            aria-label={isOpen ? 'Close menu' : 'Open menu'}
-          >
-            {isOpen ? <XMarkIcon className="h-6 w-6" /> : <Bars3Icon className="h-6 w-6" />}
-          </button>
+    <nav className="bg-teal-600 p-4 shadow-md">
+      <div className="max-w-7xl mx-auto flex justify-between items-center">
+        <h1 className="text-white text-2xl font-bold">Event Ticketing</h1>
+        <div className="space-x-4">
+          <Link href="/" className="text-white hover:text-yellow-300">Home</Link>
+          {user ? (
+            <>
+              <Link href="/my-events" className="text-white hover:text-yellow-300">My Events</Link>
+              <Link href="/my-tickets" className="text-white hover:text-yellow-300">My Tickets</Link>
+              <Link href="/dashboard" className="text-white hover:text-yellow-300">Dashboard</Link>
+              <button onClick={logout} className="text-white hover:text-yellow-300 bg-red-500 px-3 py-1 rounded">
+                Logout
+              </button>
+            </>
+          ) : (
+            <Link href="/login" className="text-white hover:text-yellow-300">Login</Link>
+          )}
         </div>
-
       </div>
     </nav>
   );
-};
-
-export default Navbar;
+}

@@ -1,77 +1,57 @@
 "use client";
 
 import Image from "next/image";
-import LOGO from "@/app/logo/logo.png";
-import { useState, useEffect } from "react";
 import Link from "next/link";
-import EventCard from "@/components/EventCard";
-import { Event } from '@/types/events';
 
-export default function EventsPage() {
-  const [events, setEvents] = useState<Event[]>([]);
-  const [selectedCategory, setSelectedCategory] = useState("all");
+type EventCardProps = {
+  id: string;
+  title: string;
+  date?: string;
+  location?: string;
+  description?: string;
+  imageUrl?: string;
+  type?: string;
+};
 
-  useEffect(() => {
-    fetch("http://localhost:3001/api/events")
-      .then((response) => response.json())
-      .then((data) => setEvents(data))
-      .catch((error) => console.error("Error fetching events:", error));
-  }, []);
-
-  const filteredEvents = selectedCategory === "all"
-    ? events
-    : events.filter((event) => event.type === selectedCategory);
-
-  const isAdmin = false; // Mock non-admin user
-
+export default function EventCard({
+  id,
+  title,
+  date,
+  location,
+  description,
+  imageUrl,
+  type,
+}: EventCardProps) {
   return (
-    <div className="p-4 bg-gradient-to-r from-green-50 to-white min-h-screen">
-      <div className="mt-4">
-        <div className="mb-6 flex items-center">
-          <Image
-            src={LOGO}
-            alt="Event Management System Logo"
-            width={50}
-            height={50}
-            className="mr-2"
-          />
-          <h1 className="text-3xl font-bold text-gray-900">Events</h1>
-        </div>
+    <div className="bg-white rounded-xl shadow-xl overflow-hidden flex flex-col">
+      <div className="relative w-full h-44 bg-gray-100">
+        <Image
+          src={imageUrl || "https://via.placeholder.com/800x400?text=Event+Image"}
+          alt={title}
+          fill
+          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+          className="object-cover"
+        />
       </div>
 
-      <div className="mb-6">
-        <label htmlFor="categoryFilter" className="block text-sm font-medium text-gray-700 mb-2">
-          Filter by Category
-        </label>
-        <select
-          id="categoryFilter"
-          value={selectedCategory}
-          onChange={(e) => setSelectedCategory(e.target.value)}
-          className="w-full p-2 border border-gray-300 rounded-md focus:ring focus:ring-blue-300"
-        >
-          <option value="all">All Categories</option>
-          <option value="seminar">Seminar</option>
-          <option value="music show">Music Show</option>
-          <option value="hackathon">Hackathon</option>
-          <option value="debate">Debate</option>
-          <option value="workshop">Workshop</option>
-        </select>
-      </div>
+      <div className="p-5 flex-1 flex flex-col">
+        <h3 className="text-xl font-bold text-teal-600">{title}</h3>
+        <p className="text-sm text-gray-600 mt-1">
+          {date ? date : ""}{date && location ? " • " : ""}{location ? location : ""}
+        </p>
+        {type ? <p className="text-sm text-gray-600 mt-1">{type}</p> : null}
+        {description ? (
+          <p className="text-gray-700 mt-3 line-clamp-3">{description}</p>
+        ) : null}
 
-      {isAdmin && (
-        <div className="mb-6">
-          <Link href="/admin/events/create">
-            <button className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700">
-              Add Events
-            </button>
+        <div className="mt-4">
+          <Link
+            href={`/user/events/${id}`}
+            className="inline-block bg-teal-600 text-white px-4 py-2 rounded hover:bg-teal-700"
+          >
+            View Details
           </Link>
         </div>
-      )}
-
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {filteredEvents.map((event) => (
-          <EventCard key={event.id} {...event} />
-        ))}
       </div>
     </div>
   );
