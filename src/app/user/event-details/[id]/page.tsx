@@ -5,12 +5,8 @@ import LOGO from "@/app/logo/logo.png";
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import { Event } from "@/types/events";
+import Link from 'next/link';
 
-type ToastType = {
-  message: string;
-  type: "success" | "error";
-  duration?: number;
-};
 
 const showToast = (message: string, type: "success" | "error") => {
   const toastElement = document.createElement("div");
@@ -123,9 +119,10 @@ export default function EventDetailPage() {
             {registeredCount >= capacity ? "Join Waitlist" : "Register"}
           </button>
         )}
-        <a href="/user/events" className="text-blue-600 hover:underline mt-4 block">
-          Back to Events
-        </a>
+        
+        <Link href="/user/events/">
+  <button>Back to Events</button>
+</Link>
       </div>
     </div>
   );

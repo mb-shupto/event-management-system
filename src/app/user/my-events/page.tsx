@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import Link from 'next/link';
 import ProtectedRoute from '@/components/ProtectedRoute';
 
 interface SavedEvent {
@@ -38,10 +39,10 @@ export default function MyEvents() {
         <h1 className="text-3xl font-bold text-white mb-6">My Saved Events</h1>
         {savedEvents.length === 0 ? (
           <div className="bg-white p-8 rounded-lg shadow-lg text-center">
-            <p className="text-gray-600 text-lg mb-4">You haven't saved any events yet.</p>
-            <a href="/" className="bg-teal-600 text-white px-6 py-3 rounded-lg hover:bg-teal-700 inline-block">
-              Explore Events
-            </a>
+            <Link href="/">
+              <button>Browse Events</button>
+            </Link>
+            <p>You haven&apos;t purchased any tickets yet.</p>
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">

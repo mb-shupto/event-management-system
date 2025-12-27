@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import Link from 'next/link';
 import { QRCodeSVG } from 'qrcode.react';
 import ProtectedRoute from '@/components/ProtectedRoute';
 import { useAuth } from '@/lib/authContext';
@@ -58,10 +59,10 @@ export default function MyTickets() {
           </div>
         ) : tickets.length === 0 ? (
           <div className="bg-white p-8 rounded-lg shadow-lg text-center">
-            <p className="text-gray-600 text-lg mb-4">You haven't purchased any tickets yet.</p>
-            <a href="/user/events" className="bg-teal-600 text-white px-6 py-3 rounded-lg hover:bg-teal-700 inline-block">
+            <p className="text-gray-600 text-lg mb-4">You haven&apos;t purchased any tickets yet.</p>
+            <Link href="/user/events" className="bg-teal-600 text-white px-6 py-3 rounded-lg hover:bg-teal-700 inline-block">
               Browse Events
-            </a>
+            </Link>
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">

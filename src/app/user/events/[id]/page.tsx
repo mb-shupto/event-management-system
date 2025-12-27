@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
-import { doc, getDoc, runTransaction, setDoc } from 'firebase/firestore';
+import { doc, getDoc, runTransaction } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
 import { useAuth } from '@/lib/authContext';
 import ProtectedRoute from '@/components/ProtectedRoute';
@@ -98,9 +98,10 @@ export default function UserEventDetail() {
 
       setSuccess(true);
       setTimeout(() => router.push('/user/my-tickets'), 1200);
-    } catch (error: any) {
-      alert(error?.message || 'Purchase failed');
-    } finally {
+    } catch (error) {
+  console.error(error);
+  setError((error as Error).message || 'An error occurred');
+} finally {
       setPurchaseLoading(false);
     }
   };
@@ -200,4 +201,8 @@ export default function UserEventDetail() {
       </div>
     </ProtectedRoute>
   );
+}
+
+function setError(arg0: string) {
+  throw new Error('Function not implemented.');
 }

@@ -26,9 +26,10 @@ export default function Login() {
         await loginWithEmail(email, password);
       }
       router.push('/dashboard'); // Redirect to home/dashboard after success
-    } catch (err: any) {
-      setError(err.message || 'Authentication failed');
-    } finally {
+    } catch (error) {
+  console.error(error);
+  setError((error as Error).message || 'An error occurred');
+} finally {
       setLoading(false);
     }
   };
@@ -39,9 +40,10 @@ export default function Login() {
     try {
       await loginWithGoogle();
       router.push('/');
-    } catch (err: any) {
-      setError(err.message || 'Google login failed');
-    } finally {
+    } catch (error) {
+  console.error(error);
+  setError((error as Error).message || 'An error occurred');
+}finally {
       setLoading(false);
     }
   };
@@ -110,7 +112,7 @@ export default function Login() {
         </div>
 
         <p className="text-center mt-6 text-gray-600">
-          {isSignup ? 'Already have an account?' : "Don't have an account?"}{' '}
+          {isSignup ? 'Already have an account?' : "Don&apos;t have an account?"}{' '}
           <button
             onClick={() => setIsSignup(!isSignup)}
             className="text-teal-600 font-semibold hover:underline"

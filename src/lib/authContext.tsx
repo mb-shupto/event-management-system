@@ -12,7 +12,7 @@ import {
   createUserWithEmailAndPassword,
   signOut,
 } from 'firebase/auth';
-import { doc, setDoc, getDoc, serverTimestamp } from 'firebase/firestore';
+import { doc, setDoc, getDoc, serverTimestamp, Timestamp } from 'firebase/firestore';
 
 interface AuthContextType {
   user: User | null;
@@ -28,8 +28,8 @@ interface UserProfile {
   name: string;
   email: string;
   role: string;
-  createdAt: any;
-  department?: string; 
+  createdAt: Timestamp;
+  department?: string;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -49,15 +49,20 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
         if (!userDoc.exists()) {
           // Create user profile with defaults
-          const profileData = {
+          const profileDataForDb = {
             name: firebaseUser.displayName || firebaseUser.email?.split('@')[0] || 'User',
             email: firebaseUser.email || '',
             role: 'student', // default — change to 'organizer' manually for admin
             createdAt: serverTimestamp(),
           };
 
-          await setDoc(userDocRef, profileData);
-          setUserProfile(profileData as UserProfile);
+          await setDoc(userDocRef, profileDataForDb);
+          setUserProfile({
+            name: profileDataForDb.name,
+            email: profileDataForDb.email,
+            role: profileDataForDb.role,
+            createdAt: Timestamp.now(),
+          });
         } else {
           setUserProfile(userDoc.data() as UserProfile);
         }
