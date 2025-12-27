@@ -20,5 +20,13 @@ Now that the foundation is ready, tell me which part you want to implement first
 
 ---------------------------------------------------------
 - Ticket Purchase Flow (update Firestore ticket count, save to user’s tickets)
+
+
 - My Tickets with QR (fetch from Firestore)
 Organizer Dashboard (real data + charts)
+
+
+Let’s build event creation for organizers
+
+
+“Let’s implement ticket purchasing”

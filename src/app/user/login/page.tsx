@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/lib/authContext';
+import Link from 'next/link';
 
 export default function Login() {
   const [email, setEmail] = useState('');
@@ -116,6 +117,10 @@ export default function Login() {
           >
             {isSignup ? 'Log In' : 'Sign Up'}
           </button>
+          {' '}|{' '}
+          <Link href="/admin/login" className="text-teal-600 font-semibold hover:underline">
+            Login as Admin
+          </Link>
         </p>
       </div>
     </div>

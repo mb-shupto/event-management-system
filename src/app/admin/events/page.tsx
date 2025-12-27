@@ -21,7 +21,7 @@ interface Event {
   location: string;
   description: string;
   imageUrl: string;
-  ticketTiers: TicketTier[];
+  ticketTiers?: TicketTier[];
 }
 
 export default function AdminEvents() {
@@ -116,25 +116,65 @@ export default function AdminEvents() {
       <div className="max-w-6xl mx-auto p-6">
         <h1 className="text-4xl font-bold text-white mb-8">Admin: Manage Events</h1>
 
-        {/* Create Event Form */}
-        <div className="bg-white rounded-xl shadow-xl p-8 mb-10">
-          <h2 className="text-2xl font-bold text-teal-600 mb-6">Create New Event</h2>
-          <form onSubmit={handleSubmit} className="space-y-6">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {/* Existing Events */}
+        <h2 className="text-3xl font-bold text-black mb-6">Current Events</h2>
+        {loading ? (
+          <p className="text-black">Loading events...</p>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {events.map((event) => (
+              <div key={event.id} className="bg-white rounded-xl shadow-xl p-6">
+                <h3 className="text-xl font-bold text-teal-600">{event.title}</h3>
+                <p className="text-gray-600">{event.date} • {event.location}</p>
+                <p className="text-gray-700 mt-2">{event.description}</p>
+                <div className="mt-4">
+                  <h4 className="font-semibold text-gray-900">Tickets:</h4>
+                  {(event.ticketTiers ?? []).length > 0 ? (
+                    (event.ticketTiers ?? []).map((tier) => (
+                      <p key={tier.name} className="text-sm text-gray-700">
+                        {tier.name}: {tier.total - tier.sold} / {tier.total} left
+                      </p>
+                    ))
+                  ) : (
+                    <p className="text-sm text-gray-500">No ticket tiers available.</p>
+                  )}
+                </div>
+                <button
+                  onClick={() => router.push(`/admin/edit-event/${event.id}`)}
+                  className="mt-2 bg-yellow-600 text-white px-4 py-2 rounded hover:bg-yellow-700"
+                >
+                  Edit
+                </button>
+                <button
+                  onClick={() => handleDelete(event.id)}
+                  className="mt-4 bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700"
+                >
+                  Delete Event
+                </button>
+              </div>
+            ))}
+          </div>
+        )}
+
+        {/* Create Event Form (below events) */}
+        <div className="bg-white rounded-xl shadow-xl p-6 mt-10 text-gray-900">
+          <h2 className="text-xl font-bold text-teal-600 mb-4">Create New Event</h2>
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <input
                 type="text"
                 placeholder="Event Title"
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
                 required
-                className="p-3 border rounded-lg"
+                className="p-2.5 border rounded-lg text-gray-900 placeholder-gray-500"
               />
               <input
                 type="date"
                 value={date}
                 onChange={(e) => setDate(e.target.value)}
                 required
-                className="p-3 border rounded-lg"
+                className="p-2.5 border rounded-lg text-gray-900 placeholder-gray-500"
               />
               <input
                 type="text"
@@ -142,14 +182,14 @@ export default function AdminEvents() {
                 value={location}
                 onChange={(e) => setLocation(e.target.value)}
                 required
-                className="p-3 border rounded-lg"
+                className="p-2.5 border rounded-lg text-gray-900 placeholder-gray-500"
               />
               <input
                 type="url"
                 placeholder="Image URL"
                 value={imageUrl}
                 onChange={(e) => setImageUrl(e.target.value)}
-                className="p-3 border rounded-lg"
+                className="p-2.5 border rounded-lg text-gray-900 placeholder-gray-500"
               />
             </div>
             <textarea
@@ -157,34 +197,34 @@ export default function AdminEvents() {
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               required
-              rows={4}
-              className="w-full p-3 border rounded-lg"
+              rows={3}
+              className="w-full p-2.5 border rounded-lg text-gray-900 placeholder-gray-500"
             />
 
             <div>
-              <h3 className="text-xl font-semibold mb-3">Ticket Tiers</h3>
+              <h3 className="text-lg font-semibold mb-2">Ticket Tiers</h3>
               {tiers.map((tier, index) => (
-                <div key={index} className="grid grid-cols-4 gap-4 mb-3 items-center">
+                <div key={index} className="grid grid-cols-4 gap-3 mb-3 items-center">
                   <input
                     type="text"
                     placeholder="Name (e.g., VIP)"
                     value={tier.name}
                     onChange={(e) => updateTier(index, 'name', e.target.value)}
-                    className="p-2 border rounded"
+                    className="p-2 border rounded text-gray-900 placeholder-gray-500"
                   />
                   <input
                     type="number"
                     placeholder="Price"
                     value={tier.price}
                     onChange={(e) => updateTier(index, 'price', parseInt(e.target.value))}
-                    className="p-2 border rounded"
+                    className="p-2 border rounded text-gray-900 placeholder-gray-500"
                   />
                   <input
                     type="number"
                     placeholder="Total Tickets"
                     value={tier.total}
                     onChange={(e) => updateTier(index, 'total', parseInt(e.target.value))}
-                    className="p-2 border rounded"
+                    className="p-2 border rounded text-gray-900 placeholder-gray-500"
                   />
                   <button
                     type="button"
@@ -206,48 +246,12 @@ export default function AdminEvents() {
 
             <button
               type="submit"
-              className="w-full bg-teal-600 text-white py-4 rounded-lg text-xl font-bold hover:bg-teal-700"
+              className="w-full bg-teal-600 text-white py-3 rounded-lg text-lg font-bold hover:bg-teal-700"
             >
               Create Event
             </button>
-            <button
-              onClick={() => router.push(`/admin/events/${event.id}/edit`)}
-              className="mt-2 bg-yellow-600 text-white px-4 py-2 rounded hover:bg-yellow-700"
-            >
-              Edit
-            </button>
           </form>
         </div>
-
-        {/* Existing Events */}
-        <h2 className="text-3xl font-bold text-white mb-6">Current Events</h2>
-        {loading ? (
-          <p className="text-white">Loading events...</p>
-        ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {events.map((event) => (
-              <div key={event.id} className="bg-white rounded-xl shadow-xl p-6">
-                <h3 className="text-xl font-bold text-teal-600">{event.title}</h3>
-                <p className="text-gray-600">{event.date} • {event.location}</p>
-                <p className="text-gray-700 mt-2">{event.description}</p>
-                <div className="mt-4">
-                  <h4 className="font-semibold">Tickets:</h4>
-                  {event.ticketTiers.map((tier: any) => (
-                    <p key={tier.name} className="text-sm">
-                      {tier.name}: {tier.total - tier.sold} / {tier.total} left
-                    </p>
-                  ))}
-                </div>
-                <button
-                  onClick={() => handleDelete(event.id)}
-                  className="mt-4 bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700"
-                >
-                  Delete Event
-                </button>
-              </div>
-            ))}
-          </div>
-        )}
       </div>
     </ProtectedRoute>
   );
