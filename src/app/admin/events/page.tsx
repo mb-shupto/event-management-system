@@ -1,91 +1,254 @@
-"use client";
+'use client';
 
-import Image from "next/image";
-import LOGO from "@/app/Logo/logo.png";
-import Link from "next/link";
-import { useEffect, useState } from "react";
-import { Event } from "@/types/events";
-import DeleteEventModal from "@/components/DeleteEventModal";
+import { useEffect, useState } from 'react';
+import { collection, addDoc, onSnapshot, doc, updateDoc, deleteDoc, query, orderBy } from 'firebase/firestore';
+import { db } from '@/lib/firebase';
+import { useAuth } from '@/lib/authContext';
+import ProtectedRoute from '@/components/ProtectedRoute';
+import { useRouter } from 'next/navigation';
 
+interface TicketTier {
+  name: string;
+  price: number;
+  total: number;
+  sold: number;
+}
 
-export default function AdminEventsPage() {
+interface Event {
+  id: string;
+  title: string;
+  date: string;
+  location: string;
+  description: string;
+  imageUrl: string;
+  ticketTiers: TicketTier[];
+}
+
+export default function AdminEvents() {
+  const { userProfile, user } = useAuth();
+  const router = useRouter();
   const [events, setEvents] = useState<Event[]>([]);
-  const [showModal, setShowModal] = useState(false);
-  const [eventToDelete, setEventToDelete] = useState<number | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  // Form state
+  const [title, setTitle] = useState('');
+  const [date, setDate] = useState('');
+  const [location, setLocation] = useState('');
+  const [description, setDescription] = useState('');
+  const [imageUrl, setImageUrl] = useState('');
+  const [tiers, setTiers] = useState<TicketTier[]>([{ name: 'General', price: 10, total: 100, sold: 0 }]);
 
   useEffect(() => {
-    fetch("http://localhost:3001/api/events")
-      .then((response) => response.json())
-      .then((data) => setEvents(data))
-      .catch((error) => console.error("Error fetching events:", error));
-  }, []);
+    if (!user) return;
 
-  const handleDelete = async (id: number) => {
-    try {
-      const response = await fetch(`http://localhost:3001/api/events/${id}`, {
-        method: "DELETE",
+    const q = query(collection(db, 'events'), orderBy('date'));
+
+    const unsubscribe = onSnapshot(q, (snapshot) => {
+      const eventsData: Event[] = [];
+      snapshot.forEach((doc) => {
+        eventsData.push({ id: doc.id, ...doc.data() } as Event);
       });
-      if (response.ok) {
-        setEvents(events.filter((event) => event.id !== id));
-      } else {
-        const errorText = await response.text();
-        console.error("Delete error:", response.status, errorText);
-      }
+      setEvents(eventsData);
+      setLoading(false);
+    });
+
+    return () => unsubscribe();
+  }, [user]);
+
+  const addTier = () => {
+    setTiers([...tiers, { name: 'New Tier', price: 0, total: 50, sold: 0 }]);
+  };
+
+  const updateTier = (index: number, field: keyof TicketTier, value: string | number) => {
+    const newTiers = [...tiers];
+    newTiers[index] = { ...newTiers[index], [field]: value };
+    setTiers(newTiers);
+  };
+
+  const removeTier = (index: number) => {
+    setTiers(tiers.filter((_, i) => i !== index));
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!user) return;
+
+    try {
+      await addDoc(collection(db, 'events'), {
+        title,
+        date,
+        location,
+        description,
+        imageUrl,
+        ticketTiers: tiers,
+        createdBy: user.uid,
+        createdAt: new Date().toISOString(),
+      });
+
+      // Reset form
+      setTitle('');
+      setDate('');
+      setLocation('');
+      setDescription('');
+      setImageUrl('');
+      setTiers([{ name: 'General', price: 10, total: 100, sold: 0 }]);
+
+      alert('Event created successfully!');
     } catch (error) {
-      console.error("Network error:", error);
+      console.error('Error adding event:', error);
+      alert('Failed to create event');
     }
   };
 
+  const handleDelete = async (id: string) => {
+    if (confirm('Delete this event? This cannot be undone.')) {
+      await deleteDoc(doc(db, 'events', id));
+    }
+  };
+
+  // Role check
+  if (userProfile?.role !== 'organizer' && userProfile?.role !== 'admin') {
+    return <p>Access Denied</p>;
+  }
+
   return (
-    <div className="p-4 bg-gradient-to-r from-blue-50 to-white min-h-screen text-black relative">
-      <div className="mt-4">
-        <div className="mb-6 flex items-center">
-          <Image
-            src={LOGO}
-            alt="Event Management System Logo"
-            width={50}
-            height={50}
-            className="mr-2"
-          />
-          <h1 className="text-3xl font-bold text-gray-900">Manage Events</h1>
+    <ProtectedRoute>
+      <div className="max-w-6xl mx-auto p-6">
+        <h1 className="text-4xl font-bold text-white mb-8">Admin: Manage Events</h1>
+
+        {/* Create Event Form */}
+        <div className="bg-white rounded-xl shadow-xl p-8 mb-10">
+          <h2 className="text-2xl font-bold text-teal-600 mb-6">Create New Event</h2>
+          <form onSubmit={handleSubmit} className="space-y-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <input
+                type="text"
+                placeholder="Event Title"
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+                required
+                className="p-3 border rounded-lg"
+              />
+              <input
+                type="date"
+                value={date}
+                onChange={(e) => setDate(e.target.value)}
+                required
+                className="p-3 border rounded-lg"
+              />
+              <input
+                type="text"
+                placeholder="Location"
+                value={location}
+                onChange={(e) => setLocation(e.target.value)}
+                required
+                className="p-3 border rounded-lg"
+              />
+              <input
+                type="url"
+                placeholder="Image URL"
+                value={imageUrl}
+                onChange={(e) => setImageUrl(e.target.value)}
+                className="p-3 border rounded-lg"
+              />
+            </div>
+            <textarea
+              placeholder="Description"
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              required
+              rows={4}
+              className="w-full p-3 border rounded-lg"
+            />
+
+            <div>
+              <h3 className="text-xl font-semibold mb-3">Ticket Tiers</h3>
+              {tiers.map((tier, index) => (
+                <div key={index} className="grid grid-cols-4 gap-4 mb-3 items-center">
+                  <input
+                    type="text"
+                    placeholder="Name (e.g., VIP)"
+                    value={tier.name}
+                    onChange={(e) => updateTier(index, 'name', e.target.value)}
+                    className="p-2 border rounded"
+                  />
+                  <input
+                    type="number"
+                    placeholder="Price"
+                    value={tier.price}
+                    onChange={(e) => updateTier(index, 'price', parseInt(e.target.value))}
+                    className="p-2 border rounded"
+                  />
+                  <input
+                    type="number"
+                    placeholder="Total Tickets"
+                    value={tier.total}
+                    onChange={(e) => updateTier(index, 'total', parseInt(e.target.value))}
+                    className="p-2 border rounded"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => removeTier(index)}
+                    className="bg-red-500 text-white px-3 py-2 rounded hover:bg-red-600"
+                  >
+                    Remove
+                  </button>
+                </div>
+              ))}
+              <button
+                type="button"
+                onClick={addTier}
+                className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+              >
+                Add Tier
+              </button>
+            </div>
+
+            <button
+              type="submit"
+              className="w-full bg-teal-600 text-white py-4 rounded-lg text-xl font-bold hover:bg-teal-700"
+            >
+              Create Event
+            </button>
+            <button
+              onClick={() => router.push(`/admin/events/${event.id}/edit`)}
+              className="mt-2 bg-yellow-600 text-white px-4 py-2 rounded hover:bg-yellow-700"
+            >
+              Edit
+            </button>
+          </form>
         </div>
-      </div>
-      <div className="bg-white p-6 rounded-lg shadow-lg">
-        <Link href="/admin/create-event" className="mb-4 inline-block text-blue-600 hover:underline">
-          Create New Event
-        </Link>
-        <div className="mt-4 space-y-4">
-          {events.map((event) => (
-            <div key={event.id} className="p-4 border rounded-md">
-              <h3 className="text-lg font-semibold">{event.title}</h3>
-              <p>Type: {event.type}</p>
-              <p>Date: {new Date(event.date).toLocaleDateString()}</p>
-              <div className="mt-2">
-                <Link href={`/admin/event-details/${event.id}`} className="text-blue-600 hover:underline mr-4">
-                  View
-                </Link>
+
+        {/* Existing Events */}
+        <h2 className="text-3xl font-bold text-white mb-6">Current Events</h2>
+        {loading ? (
+          <p className="text-white">Loading events...</p>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {events.map((event) => (
+              <div key={event.id} className="bg-white rounded-xl shadow-xl p-6">
+                <h3 className="text-xl font-bold text-teal-600">{event.title}</h3>
+                <p className="text-gray-600">{event.date} • {event.location}</p>
+                <p className="text-gray-700 mt-2">{event.description}</p>
+                <div className="mt-4">
+                  <h4 className="font-semibold">Tickets:</h4>
+                  {event.ticketTiers.map((tier: any) => (
+                    <p key={tier.name} className="text-sm">
+                      {tier.name}: {tier.total - tier.sold} / {tier.total} left
+                    </p>
+                  ))}
+                </div>
                 <button
-                  onClick={() => {
-                    setEventToDelete(event.id);
-                    setShowModal(true);
-                  }}
-                  className="text-red-600 hover:underline"
+                  onClick={() => handleDelete(event.id)}
+                  className="mt-4 bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700"
                 >
-                  Delete
+                  Delete Event
                 </button>
               </div>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
+        )}
       </div>
-  {showModal && eventToDelete && events.find((event) => event.id === eventToDelete) && (
-  <DeleteEventModal
-  event={events.find((event) => event.id === eventToDelete) ?? {} as Event}
-  eventId={eventToDelete}
-  onClose={() => setShowModal(false)}
-  onDelete={handleDelete}
-/>
-)}
-  </div>
-  )
+    </ProtectedRoute>
+  );
 }

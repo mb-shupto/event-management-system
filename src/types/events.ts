@@ -7,4 +7,6 @@ export interface Event {
   location: string;
   description: string;
   organizer: string;
+  capacity?: number;
+  registeredCount?: number;
 }

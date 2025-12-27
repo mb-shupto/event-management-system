@@ -9,9 +9,11 @@ const userOptions = [
   { label: "My Profile", href: "/user/profile", icon: UserIcon },
   { label: "Logout", action: "logout", icon: ArrowRightOnRectangleIcon },
 ];
+type UserNavBarProps = {
+  className?: string;
+};
 
-
-export default function UserNavBar() {
+export default function UserNavBar({ className }: UserNavBarProps) {
   const router = useRouter();
   const pathname = usePathname();
 
@@ -21,7 +23,7 @@ export default function UserNavBar() {
   };
 
   return (
-    <nav className="bg-blue-400 w-full  text-white text-sm font-medium py-3 shadow-md">
+    <nav className={`bg-blue-400 w-full text-white text-sm font-medium py-3 shadow-md ${className ?? ""}`.trim()}>
       <div className="flex items-center space-x-4">
         {userOptions.map((option) => {
           const isActive = option.href === pathname;

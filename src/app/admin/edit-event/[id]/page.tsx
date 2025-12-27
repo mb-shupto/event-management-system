@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import LOGO from "@/app/Logo/logo.png";
+import LOGO from "@/app/logo/logo.png";
 import { useState, useEffect } from "react";
 import { useParams, useRouter } from "next/navigation";
 
