@@ -51,7 +51,7 @@ export default function AdminRegisterPage() {
 	return (
 		<div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-teal-50 to-white p-4">
 			<div className="bg-white p-8 rounded-lg shadow-xl w-full max-w-md">
-				<h1 className="text-3xl font-bold text-center text-teal-600 mb-2">Register as Admin</h1>
+				<h1 className="text-3xl font-bold text-center text-blue-400 mb-2">Register as Admin</h1>
 				<p className="text-center text-gray-600 mb-6">Creates an organizer account for the admin portal.</p>
 
 				{error && (
@@ -88,7 +88,7 @@ export default function AdminRegisterPage() {
 					<button
 						type="submit"
 						disabled={loading}
-						className="w-full bg-teal-600 text-white py-3 rounded-lg font-semibold hover:bg-teal-700 disabled:opacity-50"
+						className="w-full bg-blue-400 text-white py-3 rounded-lg font-semibold hover:bg-teal-700 disabled:opacity-50"
 					>
 						{loading ? 'Creating…' : 'Create Admin Account'}
 					</button>
@@ -96,7 +96,7 @@ export default function AdminRegisterPage() {
 
 				<p className="text-center mt-6 text-gray-600">
 					Already have an admin account?{' '}
-					<Link href="/admin/login" className="text-teal-600 font-semibold hover:underline">
+					<Link href="/admin/login" className="text-blue-400 font-semibold hover:underline">
 						Admin Login
 					</Link>
 				</p>

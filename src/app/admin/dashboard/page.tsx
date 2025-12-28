@@ -215,7 +215,7 @@ export default function AdminDashboard() {
                 setCreateError(null);
                 setIsCreateModalOpen(true);
               }}
-              className="w-full md:w-56 bg-teal-600 text-white px-6 py-4 rounded-xl font-bold text-lg hover:bg-teal-700"
+              className="w-full md:w-56 bg-blue-400 text-white px-6 py-4 rounded-xl font-bold text-lg hover:bg-teal-700"
             >
               Create Events
             </button>
@@ -435,7 +435,7 @@ export default function AdminDashboard() {
                   <button
                     type="submit"
                     disabled={isCreating}
-                    className="flex-1 bg-teal-600 text-white py-3 rounded-lg font-semibold hover:bg-teal-700 disabled:opacity-50"
+                    className="flex-1 bg-blue-400 text-white py-3 rounded-lg font-semibold hover:bg-teal-700 disabled:opacity-50"
                   >
                     {isCreating ? 'Creating…' : 'Create Event'}
                   </button>

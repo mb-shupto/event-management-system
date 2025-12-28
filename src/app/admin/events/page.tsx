@@ -158,7 +158,7 @@ export default function AdminEvents() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {events.map((event) => (
               <div key={event.id} className="bg-white rounded-xl shadow-xl p-6">
-                <h3 className="text-xl font-bold text-teal-600">{event.title}</h3>
+                <h3 className="text-xl font-bold text-blue-400">{event.title}</h3>
                 <p className="text-gray-600">{event.date} • {event.location}</p>
                 <p className="text-gray-700 mt-2">{event.description}</p>
                 <div className="mt-4">
@@ -192,7 +192,7 @@ export default function AdminEvents() {
 
         {/* Create Event Form (below events) */}
         <div className="bg-white rounded-xl shadow-xl p-6 mt-10 text-gray-900">
-          <h2 className="text-xl font-bold text-teal-600 mb-4">Create New Event</h2>
+          <h2 className="text-xl font-bold text-blue-400 mb-4">Create New Event</h2>
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <input
@@ -280,7 +280,7 @@ export default function AdminEvents() {
 
             <button
               type="submit"
-              className="w-full bg-teal-600 text-white py-3 rounded-lg text-lg font-bold hover:bg-teal-700"
+              className="w-full bg-blue-400 text-white py-3 rounded-lg text-lg font-bold hover:bg-teal-700"
             >
               Create Event
             </button>

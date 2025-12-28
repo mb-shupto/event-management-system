@@ -134,7 +134,7 @@ export default function EventDetail() {
                                                     }`}
                                             >
                                                 <h3 className="text-2xl font-bold text-center mb-4">{tier.name}</h3>
-                                                <p className="text-5xl font-bold text-center text-teal-600 mb-6">${tier.price}</p>
+                                                <p className="text-5xl font-bold text-center text-blue-400 mb-6">${tier.price}</p>
                                                 <div className="text-center">
                                                     <p className={`text-lg font-semibold ${isSoldOut ? 'text-red-600' : 'text-gray-700'}`}>
                                                         {isSoldOut ? 'Sold Out' : `${remaining} tickets left`}
@@ -157,9 +157,9 @@ export default function EventDetail() {
                                         <p className="text-2xl font-bold">
                                             You selected: <span className="text-teal-700">{selectedTier.name}</span>
                                         </p>
-                                        <p className="text-3xl font-bold text-teal-600 mt-2">${selectedTier.price}</p>
+                                        <p className="text-3xl font-bold text-blue-400 mt-2">${selectedTier.price}</p>
                                     </div>
-                                    <button className="bg-teal-600 text-white px-12 py-5 rounded-full text-2xl font-bold hover:bg-teal-700 transition shadow-lg">
+                                    <button className="bg-blue-400 text-white px-12 py-5 rounded-full text-2xl font-bold hover:bg-teal-700 transition shadow-lg">
                                         Complete Purchase
                                     </button>
                                 </div>

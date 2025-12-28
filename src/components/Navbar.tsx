@@ -7,7 +7,7 @@ export default function Navbar() {
   const { user, logout } = useAuth();
 
   return (
-    <nav className="bg-teal-600 p-4 shadow-md">
+    <nav className="bg-blue-400 p-4 shadow-md">
       <div className="max-w-7xl mx-auto flex justify-between items-center">
         <h1 className="text-white text-2xl font-bold">Event Ticketing</h1>
         <div className="space-x-4">

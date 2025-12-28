@@ -76,7 +76,7 @@ export default function AdminLoginPage() {
 	return (
 		<div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-teal-50 to-white p-4">
 			<div className="w-full max-w-4xl bg-white rounded-2xl shadow-xl overflow-hidden grid grid-cols-1 md:grid-cols-2">
-				<div className="p-10 bg-teal-600 text-white flex flex-col justify-center">
+				<div className="p-10 bg-blue-400 text-white flex flex-col justify-center">
 					<h1 className="text-3xl font-bold">Admin Portal</h1>
 					<p className="mt-3 text-white/90">
 						Sign in with an admin/organizer account to manage events and view dashboard analytics.
@@ -129,7 +129,7 @@ export default function AdminLoginPage() {
 						<button
 							type="submit"
 							disabled={loading}
-							className="w-full bg-teal-600 text-white py-3 rounded-lg font-semibold hover:bg-teal-700 disabled:opacity-50"
+							className="w-full bg-blue-400 text-white py-3 rounded-lg font-semibold hover:bg-teal-700 disabled:opacity-50"
 						>
 							{loading ? 'Signing in…' : 'Sign in'}
 						</button>

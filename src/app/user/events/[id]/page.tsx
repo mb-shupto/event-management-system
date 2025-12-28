@@ -124,7 +124,7 @@ export default function UserEventDetail() {
             />
 
             <div className="p-8">
-              <h1 className="text-4xl font-bold text-teal-600 mb-4">{event.title}</h1>
+              <h1 className="text-4xl font-bold text-blue-400 mb-4">{event.title}</h1>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6 text-gray-700">
                 <p>
@@ -162,12 +162,12 @@ export default function UserEventDetail() {
                         disabled={remaining <= 0}
                         className={`p-6 rounded-lg border-2 transition-all text-left ${
                           selectedTier?.name === tier.name
-                            ? 'border-teal-600 bg-teal-50'
+                            ? 'border-blue-400 bg-teal-50'
                             : 'border-gray-300 hover:border-teal-400'
                         } ${remaining <= 0 ? 'opacity-50 cursor-not-allowed' : ''}`}
                       >
                         <h3 className="text-xl font-semibold">{tier.name}</h3>
-                        <p className="text-3xl font-bold text-teal-600 my-2">${tier.price}</p>
+                        <p className="text-3xl font-bold text-blue-400 my-2">${tier.price}</p>
                         <p className="text-sm text-gray-600">{remaining > 0 ? `${remaining} left` : 'Sold Out'}</p>
                       </button>
                     );
@@ -183,7 +183,7 @@ export default function UserEventDetail() {
                   <button
                     onClick={handlePurchase}
                     disabled={purchaseLoading}
-                    className="bg-teal-600 text-white px-8 py-4 rounded-lg text-xl font-semibold hover:bg-teal-700 disabled:opacity-50"
+                    className="bg-blue-400 text-white px-8 py-4 rounded-lg text-xl font-semibold hover:bg-teal-700 disabled:opacity-50"
                   >
                     {purchaseLoading ? 'Processing...' : 'Complete Purchase'}
                   </button>

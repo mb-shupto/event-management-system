@@ -163,7 +163,7 @@
               <button
                 type="button"
                 onClick={() => router.push("/admin/events")}
-                className="mt-4 bg-teal-600 text-white px-4 py-2 rounded hover:bg-teal-700"
+                className="mt-4 bg-blue-400 text-white px-4 py-2 rounded hover:bg-teal-700"
               >
                 Back to Events
               </button>

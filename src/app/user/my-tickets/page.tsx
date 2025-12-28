@@ -60,7 +60,7 @@ export default function MyTickets() {
         ) : tickets.length === 0 ? (
           <div className="bg-white p-8 rounded-lg shadow-lg text-center">
             <p className="text-gray-600 text-lg mb-4">You haven&apos;t purchased any tickets yet.</p>
-            <Link href="/user/events" className="bg-teal-600 text-white px-6 py-3 rounded-lg hover:bg-teal-700 inline-block">
+            <Link href="/user/events" className="bg-blue-400 text-white px-6 py-3 rounded-lg hover:bg-teal-700 inline-block">
               Browse Events
             </Link>
           </div>
@@ -68,7 +68,7 @@ export default function MyTickets() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {tickets.map((ticket) => (
               <div key={ticket.id} className="bg-white p-6 rounded-xl shadow-2xl">
-                <h2 className="text-2xl font-bold text-teal-600 mb-3">{ticket.eventTitle || 'Event Ticket'}</h2>
+                <h2 className="text-2xl font-bold text-blue-400 mb-3">{ticket.eventTitle || 'Event Ticket'}</h2>
                 <div className="space-y-2 text-gray-700">
                   <p><strong>Date:</strong> {ticket.date || '—'}</p>
                   <p><strong>Location:</strong> {ticket.location || '—'}</p>

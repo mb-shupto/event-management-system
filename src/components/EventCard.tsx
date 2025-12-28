@@ -35,7 +35,7 @@ export default function EventCard({
       </div>
 
       <div className="p-5 flex-1 flex flex-col">
-        <h3 className="text-xl font-bold text-teal-600">{title}</h3>
+        <h3 className="text-xl font-bold text-blue-400">{title}</h3>
         <p className="text-sm text-gray-600 mt-1">
           {date ? date : ""}{date && location ? " • " : ""}{location ? location : ""}
         </p>
@@ -47,7 +47,7 @@ export default function EventCard({
         <div className="mt-4">
           <Link
             href={`/user/events/${id}`}
-            className="inline-block bg-teal-600 text-white px-4 py-2 rounded hover:bg-teal-700"
+            className="inline-block bg-blue-400 text-white px-4 py-2 rounded hover:bg-teal-700"
           >
             View Details
           </Link>

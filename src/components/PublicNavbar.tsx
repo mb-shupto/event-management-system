@@ -12,25 +12,25 @@ export default function PublicNavbar() {
           <div className="flex items-center">
             <Link href="/" className="flex items-center">
               <Image src={bLogo} alt="Event Ticketing Logo" width={50} height={50} />
-              <span className="ml-3 text-2xl font-bold text-teal-600">EventHub</span>
+              <span className="ml-3 text-2xl font-bold text-blue-400">EventHub</span>
             </Link>
           </div>
 
           <div className="hidden md:flex items-center space-x-8">
-            <Link href="/" className="text-gray-700 hover:text-teal-600 font-medium">Home</Link>
-            <Link href="/events" className="text-gray-700 hover:text-teal-600 font-medium">All Events</Link>
-            <Link href="/about" className="text-gray-700 hover:text-teal-600 font-medium">About</Link>
-            <Link href="/contact" className="text-gray-700 hover:text-teal-600 font-medium">Contact</Link>
+            <Link href="/" className="text-gray-700 hover:text-blue-400 font-medium">Home</Link>
+            <Link href="/events" className="text-gray-700 hover:text-blue-400 font-medium">All Events</Link>
+            <Link href="/about" className="text-gray-700 hover:text-blue-400 font-medium">About</Link>
+            <Link href="/contact" className="text-gray-700 hover:text-blue-400 font-medium">Contact</Link>
           </div>
 
           <div className="flex items-center space-x-4">
             <Link href="/login">
-              <button className="px-6 py-2 text-teal-600 font-semibold border border-teal-600 rounded-lg hover:bg-teal-50 transition">
+              <button className="px-6 py-2 text-blue-400 font-semibold border border-blue-400 rounded-lg hover:bg-teal-50 transition">
                 Login
               </button>
             </Link>
             <Link href="/register">
-              <button className="px-6 py-2 bg-teal-600 text-white font-semibold rounded-lg hover:bg-teal-700 transition shadow-md">
+              <button className="px-6 py-2 bg-blue-400 text-white font-semibold rounded-lg hover:bg-teal-700 transition shadow-md">
                 Sign Up
               </button>
             </Link>

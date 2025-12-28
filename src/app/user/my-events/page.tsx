@@ -48,7 +48,7 @@ export default function MyEvents() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {savedEvents.map((event) => (
               <div key={event.id} className="bg-white p-6 rounded-xl shadow-xl hover:shadow-2xl transition-shadow">
-                <h2 className="text-2xl font-bold text-teal-600 mb-3">{event.title}</h2>
+                <h2 className="text-2xl font-bold text-blue-400 mb-3">{event.title}</h2>
                 <div className="space-y-2 text-gray-700">
                   <p><strong>Date:</strong> {event.date}</p>
                   <p><strong>Location:</strong> {event.location}</p>
