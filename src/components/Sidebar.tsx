@@ -9,7 +9,7 @@ const Sidebar: React.FC = () => {
 
   return (
     <div
-      className={`bg-blue-400 text-white h-screen ${
+      className={`bg-blue-400 text-white h-screen-infinite ${
         isOpen ? "w-64" : "w-16"
       } transition-all duration-300`}
     >
