@@ -25,12 +25,12 @@ export default function PublicNavbar() {
 
           <div className="flex items-center space-x-4">
             <Link href="/login">
-              <button className="px-6 py-2 text-blue-400 font-semibold border border-blue-400 rounded-lg hover:bg-teal-50 transition">
+              <button className="px-6 py-2 text-blue-400 font-semibold border border-blue-400 rounded-lg hover:bg-blue-50 transition">
                 Login
               </button>
             </Link>
             <Link href="/register">
-              <button className="px-6 py-2 bg-blue-400 text-white font-semibold rounded-lg hover:bg-teal-700 transition shadow-md">
+              <button className="px-6 py-2 bg-blue-400 text-white font-semibold rounded-lg hover:bg-blue-700 transition shadow-md">
                 Sign Up
               </button>
             </Link>

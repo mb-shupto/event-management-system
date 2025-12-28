@@ -60,7 +60,7 @@ export default function MyTickets() {
         ) : tickets.length === 0 ? (
           <div className="bg-white p-8 rounded-lg shadow-lg text-center">
             <p className="text-gray-600 text-lg mb-4">You haven&apos;t purchased any tickets yet.</p>
-            <Link href="/user/events" className="bg-blue-400 text-white px-6 py-3 rounded-lg hover:bg-teal-700 inline-block">
+            <Link href="/user/events" className="bg-blue-400 text-white px-6 py-3 rounded-lg hover:bg-blue-700 inline-block">
               Browse Events
             </Link>
           </div>

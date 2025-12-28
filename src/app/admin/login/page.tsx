@@ -74,7 +74,7 @@ export default function AdminLoginPage() {
 	};
 
 	return (
-		<div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-teal-50 to-white p-4">
+		<div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-white p-4">
 			<div className="w-full max-w-4xl bg-white rounded-2xl shadow-xl overflow-hidden grid grid-cols-1 md:grid-cols-2">
 				<div className="p-10 bg-blue-400 text-white flex flex-col justify-center">
 					<h1 className="text-3xl font-bold">Admin Portal</h1>
@@ -84,7 +84,7 @@ export default function AdminLoginPage() {
 					<div className="mt-8">
 						<Link
 							href="/admin/register"
-							className="inline-flex items-center justify-center w-full md:w-auto px-5 py-3 rounded-lg bg-white text-teal-700 font-semibold hover:bg-teal-50"
+							className="inline-flex items-center justify-center w-full md:w-auto px-5 py-3 rounded-lg bg-white text-blue-700 font-semibold hover:bg-blue-50"
 						>
 							Register as Admin
 						</Link>
@@ -109,7 +109,7 @@ export default function AdminLoginPage() {
 								value={email}
 								onChange={(e) => setEmail(e.target.value)}
 								required
-								className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
+								className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
 								placeholder="admin@example.com"
 							/>
 						</div>
@@ -121,7 +121,7 @@ export default function AdminLoginPage() {
 								value={password}
 								onChange={(e) => setPassword(e.target.value)}
 								required
-								className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
+								className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
 								placeholder="••••••••"
 							/>
 						</div>
@@ -129,7 +129,7 @@ export default function AdminLoginPage() {
 						<button
 							type="submit"
 							disabled={loading}
-							className="w-full bg-blue-400 text-white py-3 rounded-lg font-semibold hover:bg-teal-700 disabled:opacity-50"
+							className="w-full bg-blue-400 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 disabled:opacity-50"
 						>
 							{loading ? 'Signing in…' : 'Sign in'}
 						</button>

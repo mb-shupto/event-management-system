@@ -2,7 +2,7 @@
 
 import React from "react";
 import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 type BackButtonProps = {
   href?: string;
@@ -12,16 +12,6 @@ type BackButtonProps = {
   onClickAction?: () => void;
 };
 
-function getParentPath(pathname: string) {
-  const clean = pathname.split("?")[0].split("#")[0].replace(/\/+$/, "");
-  const parts = clean.split("/").filter(Boolean);
-
-  if (parts.length <= 1) return "/";
-
-  parts.pop();
-  return `/${parts.join("/")}`;
-}
-
 export default function BackButton({
   href,
   label = "Back",
@@ -30,7 +20,6 @@ export default function BackButton({
   onClickAction,
 }: BackButtonProps) {
   const router = useRouter();
-  const pathname = usePathname();
 
   const classes = [
     "inline-flex items-center gap-2 rounded-md border border-blue-400 px-4 py-2 text-sm font-semibold",
@@ -52,7 +41,7 @@ export default function BackButton({
 
   if (href) {
     return (
-      <Link href={href} aria-label={ariaLabel ?? label} className={classes}>
+      <Link href={"/admin/dashboard"} aria-label={ariaLabel ?? label} className={classes}>
         {content}
       </Link>
     );
@@ -65,7 +54,7 @@ export default function BackButton({
       className={classes}
       onClick={() => {
         onClickAction?.();
-        router.push(getParentPath(pathname));
+        if (!onClickAction) router.back();
       }}
     >
       {content}

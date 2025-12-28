@@ -47,7 +47,7 @@ export default function EventCard({
         <div className="mt-4">
           <Link
             href={`/user/events/${id}`}
-            className="inline-block bg-blue-400 text-white px-4 py-2 rounded hover:bg-teal-700"
+            className="inline-block bg-blue-400 text-white px-4 py-2 rounded hover:bg-blue-700"
           >
             View Details
           </Link>

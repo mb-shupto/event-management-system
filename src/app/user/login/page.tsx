@@ -69,7 +69,7 @@ export default function Login() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
               placeholder="you@example.com"
             />
           </div>
@@ -81,7 +81,7 @@ export default function Login() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
               placeholder="••••••••"
             />
           </div>
@@ -89,7 +89,7 @@ export default function Login() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-blue-400 text-white py-3 rounded-lg font-semibold hover:bg-teal-700 disabled:opacity-50"
+            className="w-full bg-blue-400 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 disabled:opacity-50"
           >
             {loading ? 'Processing...' : isSignup ? 'Sign Up' : 'Log In'}
           </button>
@@ -112,7 +112,7 @@ export default function Login() {
         </div>
 
         <p className="text-center mt-6 text-gray-600">
-          {isSignup ? 'Already have an account?' : "Don&apos;t have an account?"}{' '}
+          {isSignup ? 'Already have an account?' : "Don't have an account?"}{' '}
           <button
             onClick={() => setIsSignup(!isSignup)}
             className="text-blue-400 font-semibold hover:underline"

@@ -146,6 +146,17 @@ export default function AdminEvents() {
   return (
     <ProtectedRoute>
       <div className="max-w-6xl mx-auto p-6">
+        <button
+          type="button"
+          onClick={() => router.push("/admin/dashboard")}
+          className="inline-flex items-center gap-2 rounded-md border border-blue-400 px-4 py-2 text-sm font-semibold text-blue-400 transition hover:bg-blue-50 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 m-0 mb-4"
+          aria-label="Back to Admin Dashboard"
+        >
+          <span aria-hidden="true" className="font-mono text-base leading-none">
+            {"<-"}
+          </span>
+          <span>Back</span>
+        </button>
         <h1 className="text-4xl font-bold text-white mb-8">Admin: Manage Events</h1>
 
         {error && <p className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">{error}</p>}
@@ -280,7 +291,7 @@ export default function AdminEvents() {
 
             <button
               type="submit"
-              className="w-full bg-blue-400 text-white py-3 rounded-lg text-lg font-bold hover:bg-teal-700"
+              className="w-full bg-blue-400 text-white py-3 rounded-lg text-lg font-bold hover:bg-blue-700"
             >
               Create Event
             </button>

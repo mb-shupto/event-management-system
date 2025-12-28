@@ -78,7 +78,7 @@ export default function EditProfilePage() {
             value={formData.name}
             onChange={handleChange}
             required
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
+            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
         </div>
 
@@ -90,7 +90,7 @@ export default function EditProfilePage() {
             value={formData.email}
             onChange={handleChange}
             required
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
+            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
         </div>
 
@@ -102,7 +102,7 @@ export default function EditProfilePage() {
             name="department"
             value={formData.department}
             onChange={handleChange}
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
+            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
         </div>
 
@@ -123,7 +123,7 @@ export default function EditProfilePage() {
         {/* Buttons */}
         <div className="flex space-x-4">
           <Link
-            href="/profile"
+            href="/user/profile"
             className="flex-1 bg-gray-500 text-white p-2 rounded-md hover:bg-gray-600 flex items-center justify-center"
             aria-label="Back to Profile"
           >

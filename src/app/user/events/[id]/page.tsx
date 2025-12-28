@@ -162,8 +162,8 @@ export default function UserEventDetail() {
                         disabled={remaining <= 0}
                         className={`p-6 rounded-lg border-2 transition-all text-left ${
                           selectedTier?.name === tier.name
-                            ? 'border-blue-400 bg-teal-50'
-                            : 'border-gray-300 hover:border-teal-400'
+                            ? 'border-blue-400 bg-blue-50'
+                            : 'border-gray-300 hover:border-blue-400'
                         } ${remaining <= 0 ? 'opacity-50 cursor-not-allowed' : ''}`}
                       >
                         <h3 className="text-xl font-semibold">{tier.name}</h3>
@@ -183,7 +183,7 @@ export default function UserEventDetail() {
                   <button
                     onClick={handlePurchase}
                     disabled={purchaseLoading}
-                    className="bg-blue-400 text-white px-8 py-4 rounded-lg text-xl font-semibold hover:bg-teal-700 disabled:opacity-50"
+                    className="bg-blue-400 text-white px-8 py-4 rounded-lg text-xl font-semibold hover:bg-blue-700 disabled:opacity-50"
                   >
                     {purchaseLoading ? 'Processing...' : 'Complete Purchase'}
                   </button>

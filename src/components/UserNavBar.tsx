@@ -1,4 +1,5 @@
 "use client";
+
 import React from "react";
 import Link from "next/link";
 import { useRouter, usePathname } from "next/navigation";
@@ -23,12 +24,12 @@ export default function UserNavBar({ className }: UserNavBarProps) {
   };
 
   return (
-    <nav className={`bg-blue-400 w-full text-white text-sm font-medium py-3 shadow-md ${className ?? ""}`.trim()}>
-      <div className="flex items-center space-x-4">
+    <nav className={`bg-blue-400 w-full text-white text-sm font-medium py-5 shadow-md ${className ?? ""}`.trim()}>
+      <div className="flex items-center space-x-6 justify-center">
         {userOptions.map((option) => {
           const isActive = option.href === pathname;
           return (
-            <div key={option.label} className="flex items-center">
+            <div key={option.label} className="flex items-center justify-center">
               {option.href ? (
                 <Link
                   href={option.href}
@@ -55,3 +56,6 @@ export default function UserNavBar({ className }: UserNavBarProps) {
     </nav>
   );
 }
+
+
+export { UserNavBar };

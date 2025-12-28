@@ -49,7 +49,7 @@ export default function AdminRegisterPage() {
 	};
 
 	return (
-		<div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-teal-50 to-white p-4">
+		<div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-white p-4">
 			<div className="bg-white p-8 rounded-lg shadow-xl w-full max-w-md">
 				<h1 className="text-3xl font-bold text-center text-blue-400 mb-2">Register as Admin</h1>
 				<p className="text-center text-gray-600 mb-6">Creates an organizer account for the admin portal.</p>
@@ -68,7 +68,7 @@ export default function AdminRegisterPage() {
 							value={email}
 							onChange={(e) => setEmail(e.target.value)}
 							required
-							className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
+							className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
 							placeholder="admin@example.com"
 						/>
 					</div>
@@ -80,7 +80,7 @@ export default function AdminRegisterPage() {
 							value={password}
 							onChange={(e) => setPassword(e.target.value)}
 							required
-							className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
+							className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
 							placeholder="••••••••"
 						/>
 					</div>
@@ -88,7 +88,7 @@ export default function AdminRegisterPage() {
 					<button
 						type="submit"
 						disabled={loading}
-						className="w-full bg-blue-400 text-white py-3 rounded-lg font-semibold hover:bg-teal-700 disabled:opacity-50"
+						className="w-full bg-blue-400 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 disabled:opacity-50"
 					>
 						{loading ? 'Creating…' : 'Create Admin Account'}
 					</button>

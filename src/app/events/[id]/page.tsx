@@ -80,7 +80,7 @@ export default function EventDetail() {
                         className="w-full object-cover"
                     />
                     <div className="p-8 md:p-12">
-                        <h1 className="text-5xl font-bold text-teal-700 mb-6">{event.title}</h1>
+                        <h1 className="text-5xl font-bold text-blue-700 mb-6">{event.title}</h1>
 
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10 text-gray-700">
                             <div className="flex items-center gap-3">
@@ -127,10 +127,10 @@ export default function EventDetail() {
                                                 key={tier.name}
                                                 onClick={() => !isSoldOut && setSelectedTier(tier)}
                                                 className={`p-8 rounded-2xl border-4 transition-all cursor-pointer ${isSelected
-                                                        ? 'border-teal-500 bg-teal-50 shadow-2xl scale-105'
+                                                        ? 'border-blue-500 bg-blue-50 shadow-2xl scale-105'
                                                         : isSoldOut
                                                             ? 'border-gray-300 bg-gray-100 opacity-60 cursor-not-allowed'
-                                                            : 'border-gray-300 hover:border-teal-400 hover:shadow-xl'
+                                                            : 'border-gray-300 hover:border-blue-400 hover:shadow-xl'
                                                     }`}
                                             >
                                                 <h3 className="text-2xl font-bold text-center mb-4">{tier.name}</h3>
@@ -153,13 +153,13 @@ export default function EventDetail() {
 
                             {selectedTier && (
                                 <div className="mt-12 text-center">
-                                    <div className="bg-teal-100 p-6 rounded-xl inline-block mb-6">
+                                    <div className="bg-blue-100 p-6 rounded-xl inline-block mb-6">
                                         <p className="text-2xl font-bold">
-                                            You selected: <span className="text-teal-700">{selectedTier.name}</span>
+                                            You selected: <span className="text-blue-700">{selectedTier.name}</span>
                                         </p>
                                         <p className="text-3xl font-bold text-blue-400 mt-2">${selectedTier.price}</p>
                                     </div>
-                                    <button className="bg-blue-400 text-white px-12 py-5 rounded-full text-2xl font-bold hover:bg-teal-700 transition shadow-lg">
+                                    <button className="bg-blue-400 text-white px-12 py-5 rounded-full text-2xl font-bold hover:bg-blue-700 transition shadow-lg">
                                         Complete Purchase
                                     </button>
                                 </div>

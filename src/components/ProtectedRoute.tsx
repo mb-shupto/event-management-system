@@ -20,7 +20,7 @@ export default function ProtectedRoute({ children }: ProtectedRouteProps) {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-teal-400 to-blue-500">
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-400 to-blue-500">
         <div className="text-white text-2xl">
           <svg className="animate-spin h-10 w-10 mr-3" viewBox="0 0 24 24">
             <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>

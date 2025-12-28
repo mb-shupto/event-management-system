@@ -8,6 +8,9 @@ import { addDoc, collection, onSnapshot, orderBy, query } from 'firebase/firesto
 import { db } from '@/lib/firebase';
 import { useAuth } from '@/lib/authContext';
 import ProtectedRoute from '@/components/ProtectedRoute';
+import AdminNavbar from '@/components/AdminNavbar';
+import UserNavbar from '@/components/UserNavBar'
+
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend, ArcElement);
 
@@ -205,7 +208,8 @@ export default function AdminDashboard() {
 
   return (
     <ProtectedRoute>
-      <div className="p-6">
+      <div className="p-0">
+        <AdminNavbar/>
         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
           <h1 className="text-3xl font-bold">Admin Dashboard</h1>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 w-full md:w-auto">
@@ -215,7 +219,7 @@ export default function AdminDashboard() {
                 setCreateError(null);
                 setIsCreateModalOpen(true);
               }}
-              className="w-full md:w-56 bg-blue-400 text-white px-6 py-4 rounded-xl font-bold text-lg hover:bg-teal-700"
+              className="w-full md:w-56 bg-blue-400 text-white px-6 py-4 rounded-xl font-bold text-lg hover:bg-blue-700"
             >
               Create Events
             </button>
@@ -319,7 +323,7 @@ export default function AdminDashboard() {
                       value={createForm.title}
                       onChange={handleCreateChange}
                       required
-                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
+                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                       placeholder="Event title"
                     />
                   </div>
@@ -331,7 +335,7 @@ export default function AdminDashboard() {
                       type="text"
                       value={createForm.type}
                       onChange={handleCreateChange}
-                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
+                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                       placeholder="Seminar, Workshop, ..."
                     />
                   </div>
@@ -344,7 +348,7 @@ export default function AdminDashboard() {
                       value={createForm.date}
                       onChange={handleCreateChange}
                       required
-                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
+                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                     />
                   </div>
 
@@ -356,7 +360,7 @@ export default function AdminDashboard() {
                       value={createForm.location}
                       onChange={handleCreateChange}
                       required
-                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
+                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                       placeholder="Hall A, Campus"
                     />
                   </div>
@@ -369,7 +373,7 @@ export default function AdminDashboard() {
                     type="url"
                     value={createForm.imageUrl}
                     onChange={handleCreateChange}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                     placeholder="https://..."
                   />
                 </div>
@@ -381,7 +385,7 @@ export default function AdminDashboard() {
                     value={createForm.description}
                     onChange={handleCreateChange}
                     rows={4}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                     placeholder="Describe the event"
                   />
                 </div>
@@ -396,7 +400,7 @@ export default function AdminDashboard() {
                         type="text"
                         value={createForm.tierName}
                         onChange={handleCreateChange}
-                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
+                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                       />
                     </div>
                     <div>
@@ -407,7 +411,7 @@ export default function AdminDashboard() {
                         value={createForm.tierPrice}
                         onChange={handleCreateChange}
                         min={0}
-                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
+                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                       />
                     </div>
                     <div>
@@ -418,7 +422,7 @@ export default function AdminDashboard() {
                         value={createForm.tierTotal}
                         onChange={handleCreateChange}
                         min={1}
-                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
+                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                       />
                     </div>
                   </div>
@@ -435,7 +439,7 @@ export default function AdminDashboard() {
                   <button
                     type="submit"
                     disabled={isCreating}
-                    className="flex-1 bg-blue-400 text-white py-3 rounded-lg font-semibold hover:bg-teal-700 disabled:opacity-50"
+                    className="flex-1 bg-blue-400 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 disabled:opacity-50"
                   >
                     {isCreating ? 'Creating…' : 'Create Event'}
                   </button>

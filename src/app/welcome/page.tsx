@@ -7,7 +7,7 @@ import Link from 'next/link';
 
 export default function WelcomePage() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-teal-50 to-blue-100">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-blue-100">
       <PublicNavbar />
 
       {/* Hero */}
@@ -21,12 +21,12 @@ export default function WelcomePage() {
           </p>
           <div className="flex flex-col sm:flex-row gap-8 justify-center">
             <Link href="/register">
-              <button className="bg-blue-400 text-white px-12 py-6 rounded-full text-2xl font-bold hover:bg-teal-700 shadow-2xl">
+              <button className="bg-blue-400 text-white px-12 py-6 rounded-full text-2xl font-bold hover:bg-blue-700 shadow-2xl">
                 Get Started Free
               </button>
             </Link>
             <Link href="/login">
-              <button className="bg-white text-blue-400 border-4 border-blue-400 px-12 py-6 rounded-full text-2xl font-bold hover:bg-teal-50">
+              <button className="bg-white text-blue-400 border-4 border-blue-400 px-12 py-6 rounded-full text-2xl font-bold hover:bg-blue-50">
                 Login
               </button>
             </Link>

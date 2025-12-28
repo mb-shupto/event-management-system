@@ -6,7 +6,7 @@ import { useAuth } from '@/lib/authContext';
 import Image from 'next/image';
 import LOGO from "@/app/logo/logo.png";
 import { UserCircleIcon, PencilSquareIcon } from "@heroicons/react/24/outline";
-import UserNavBar from "@/components/UserNavBar";
+import UserNavbar from "@/components/UserNavBar";
 
 export default function ProfilePage() {
   const { userProfile } = useAuth();
@@ -28,7 +28,7 @@ export default function ProfilePage() {
 
   return (
     <div>
-      <nav> <UserNavBar className="mb-2" /></nav> 
+      <nav> <UserNavbar className="mb-2" /></nav> 
       <div className="p-4">
         <div className="mt-4">
           <div className="mb-4 flex items-center">
@@ -68,7 +68,7 @@ export default function ProfilePage() {
               Edit Profile
             </Link>
             <Link
-              href="/user/dashboard"
+              href="/dashboard"
               className="mt-4 inline-flex items-center bg-red-600 text-white px-3 py-2 rounded-md hover:bg-red-700"
             >
               Back
