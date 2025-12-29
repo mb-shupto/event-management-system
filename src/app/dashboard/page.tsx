@@ -11,7 +11,6 @@ import { UserCircleIcon, CalendarIcon } from "@heroicons/react/24/outline";
 import { collection, onSnapshot, query, orderBy } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
 import { useAuth } from "@/lib/authContext";
-import Header from '@/components/Header';
 
 interface Event {
   id: string;
