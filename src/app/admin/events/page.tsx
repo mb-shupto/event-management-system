@@ -75,19 +75,21 @@ export default function AdminEvents() {
     }
   }, [user]);
 
-  const addTier = () => {
-    setTiers([...tiers, { name: 'New Tier', price: 0, total: 50, sold: 0 }]);
-  };
+  // const addTier = () => {
+  //   setTiers([...tiers, { name: 'New Tier', price: 0, total: 50, sold: 0 }]);
+  // };
 
-  const updateTier = (index: number, field: keyof TicketTier, value: string | number) => {
-    const newTiers = [...tiers];
-    newTiers[index] = { ...newTiers[index], [field]: value };
-    setTiers(newTiers);
-  };
+  // const updateTier = (index: number, field: keyof TicketTier, value: string | number) => {
+  //   const newTiers = [...tiers];
+  //   newTiers[index] = { ...newTiers[index], [field]: value };
+  //   setTiers(newTiers);
+  // };
 
-  const removeTier = (index: number) => {
-    setTiers(tiers.filter((_, i) => i !== index));
-  };
+  // const removeTier = (index: number) => {
+  //   setTiers(tiers.filter((_, i) => i !== index));
+  // };
+
+
   // Role check - show early if not authorized
   if (!authLoading && userProfile?.role !== 'organizer' && userProfile?.role !== 'admin') {
     return <p className="text-red-600 p-6">Access Denied: Only organizers and admins can manage events.</p>;
@@ -200,104 +202,20 @@ export default function AdminEvents() {
             ))}
           </div>
         )}
-
-        {/* Create Event Form (below events) */}
-        <div className="bg-white rounded-xl shadow-xl p-6 mt-10 text-gray-900">
-          <h2 className="text-xl font-bold text-blue-400 mb-4">Create New Event</h2>
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <input
-                type="text"
-                placeholder="Event Title"
-                value={title}
-                onChange={(e) => setTitle(e.target.value)}
-                required
-                className="p-2.5 border rounded-lg text-gray-900 placeholder-gray-500"
-              />
-              <input
-                type="date"
-                value={date}
-                onChange={(e) => setDate(e.target.value)}
-                required
-                className="p-2.5 border rounded-lg text-gray-900 placeholder-gray-500"
-              />
-              <input
-                type="text"
-                placeholder="Location"
-                value={location}
-                onChange={(e) => setLocation(e.target.value)}
-                required
-                className="p-2.5 border rounded-lg text-gray-900 placeholder-gray-500"
-              />
-              <input
-                type="url"
-                placeholder="Image URL"
-                value={imageUrl}
-                onChange={(e) => setImageUrl(e.target.value)}
-                className="p-2.5 border rounded-lg text-gray-900 placeholder-gray-500"
-              />
-            </div>
-            <textarea
-              placeholder="Description"
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
-              required
-              rows={3}
-              className="w-full p-2.5 border rounded-lg text-gray-900 placeholder-gray-500"
-            />
-
-            <div>
-              <h3 className="text-lg font-semibold mb-2">Ticket Tiers</h3>
-              {tiers.map((tier, index) => (
-                <div key={index} className="grid grid-cols-4 gap-3 mb-3 items-center">
-                  <input
-                    type="text"
-                    placeholder="Name (e.g., VIP)"
-                    value={tier.name}
-                    onChange={(e) => updateTier(index, 'name', e.target.value)}
-                    className="p-2 border rounded text-gray-900 placeholder-gray-500"
-                  />
-                  <input
-                    type="number"
-                    placeholder="Price"
-                    value={tier.price}
-                    onChange={(e) => updateTier(index, 'price', parseInt(e.target.value))}
-                    className="p-2 border rounded text-gray-900 placeholder-gray-500"
-                  />
-                  <input
-                    type="number"
-                    placeholder="Total Tickets"
-                    value={tier.total}
-                    onChange={(e) => updateTier(index, 'total', parseInt(e.target.value))}
-                    className="p-2 border rounded text-gray-900 placeholder-gray-500"
-                  />
-                  <button
-                    type="button"
-                    onClick={() => removeTier(index)}
-                    className="bg-red-500 text-white px-3 py-2 rounded hover:bg-red-600"
-                  >
-                    Remove
-                  </button>
-                </div>
-              ))}
+            <div className="flex justify-center">
               <button
                 type="button"
-                onClick={addTier}
-                className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+                onClick={() => router.push("/admin/dashboard")}
+                className="inline-flex items-center gap-2 rounded-md border border-blue-400 px-4 py-2 text-sm font-semibold text-blue-400 transition hover:bg-blue-50 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 m-0 mb-4"
+                aria-label="Back to Admin Dashboard"
               >
-                Add Tier
+                <span aria-hidden="true" className="font-mono text-base leading-none">
+                  {"<-"}
+                </span>
+                <span>Back</span>
               </button>
             </div>
-
-            <button
-              type="submit"
-              className="w-full bg-blue-400 text-white py-3 rounded-lg text-lg font-bold hover:bg-blue-700"
-            >
-              Create Event
-            </button>
-          </form>
         </div>
-      </div>
     </ProtectedRoute>
   );
 }

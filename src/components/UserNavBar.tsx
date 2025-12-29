@@ -1,61 +1,85 @@
-"use client";
+'use client';
 
-import React from "react";
-import Link from "next/link";
-import { useRouter, usePathname } from "next/navigation";
-import { HomeIcon, CalendarIcon, UserIcon, ArrowRightOnRectangleIcon } from '@heroicons/react/24/outline';
-const userOptions = [
-  { label: "Dashboard", href: "/user/dashboard", icon: HomeIcon },
-  { label: "My Events", href: "/user/my-events", icon: CalendarIcon },
-  { label: "My Profile", href: "/user/profile", icon: UserIcon },
-  { label: "Logout", action: "logout", icon: ArrowRightOnRectangleIcon },
-];
+import Link from 'next/link';
+import Image from 'next/image';
+import { usePathname, useRouter } from 'next/navigation';
+import { useMemo } from 'react';
+import bLogo from '@/app/logo/event-management-logo-black.png';
+import { useAuth } from '@/lib/authContext';
+
 type UserNavBarProps = {
   className?: string;
 };
 
-export default function UserNavBar({ className }: UserNavBarProps) {
-  const router = useRouter();
-  const pathname = usePathname();
+type NavItem = {
+  label: string;
+  href: string;
+};
 
-  const handleLogout = () => {
-    // Placeholder for logout logic (e.g., API call to invalidate session)
-    router.push("/user/login");
+export default function UserNavBar({ className }: UserNavBarProps) {
+  const pathname = usePathname();
+  const router = useRouter();
+  const { logout } = useAuth();
+
+  const items: NavItem[] = useMemo(
+    () => [
+      { label: 'Dashboard', href: '/dashboard' },
+      { label: 'Events', href: '/user/events' },
+      { label: 'My Events', href: '/user/my-events' },
+      { label: 'My Tickets', href: '/user/my-tickets' },
+      { label: 'Profile', href: '/user/profile' },
+    ],
+    [],
+  );
+
+  const isActive = (href: string) => pathname === href || pathname.startsWith(`${href}/`);
+
+  const handleLogout = async () => {
+    await logout();
+    router.push('/login');
   };
 
   return (
-    <nav className={`bg-blue-400 w-full text-white text-sm font-medium py-5 shadow-md ${className ?? ""}`.trim()}>
-      <div className="flex items-center space-x-6 justify-center">
-        {userOptions.map((option) => {
-          const isActive = option.href === pathname;
-          return (
-            <div key={option.label} className="flex items-center justify-center">
-              {option.href ? (
+    <nav className={`bg-white shadow-lg sticky top-0 z-50 ${className ?? ''}`.trim()}>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex justify-between items-center h-16">
+          <div className="flex items-center">
+            <Link href="/dashboard" className="flex items-center" aria-label="Go to Dashboard">
+              <Image src={bLogo} alt="Event Ticketing Logo" width={50} height={50} />
+              <span className="ml-3 text-2xl font-bold text-blue-400">EventHub</span>
+            </Link>
+          </div>
+
+          <div className="hidden md:flex items-center space-x-8">
+            {items.map((item) => {
+              const active = isActive(item.href);
+              return (
                 <Link
-                  href={option.href}
-                  className={`flex items-center px-4 py-2 rounded-md transition ${
-                    isActive ? 'text-white' : 'hover:bg-[#314256]'
+                  key={item.href}
+                  href={item.href}
+                  className={`font-medium transition ${
+                    active ? 'text-blue-400' : 'text-gray-700 hover:text-blue-400'
                   }`}
                 >
-                  <option.icon className={`w-5 h-5 mr-2 ${isActive ? 'text-white' : 'text-gray-300'}`} />
-                  {option.label}
+                  {item.label}
                 </Link>
-              ) : (
-                <button
-                  onClick={handleLogout}
-                  className="flex items-center px-4 py-2 hover:bg-[#314256] rounded-md transition"
-                >
-                  <option.icon className="w-5 h-5 mr-2 text-gray-300" />
-                  {option.label}
-                </button>
-              )}
-            </div>
-          );
-        })}
+              );
+            })}
+          </div>
+
+          <div className="flex items-center space-x-4">
+            <button
+              type="button"
+              onClick={handleLogout}
+              className="px-6 py-2 bg-blue-400 text-white font-semibold rounded-lg hover:bg-blue-700 transition shadow-md"
+            >
+              Logout
+            </button>
+          </div>
+        </div>
       </div>
     </nav>
   );
 }
-
 
 export { UserNavBar };

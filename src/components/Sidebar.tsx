@@ -5,11 +5,11 @@ import { useState } from "react";
 import { HomeIcon, CalendarIcon, UserIcon, ArrowLeftOnRectangleIcon } from "@heroicons/react/24/outline";
 
 const Sidebar: React.FC = () => {
-  const [isOpen, setIsOpen] = useState(true); // Toggle sidebar for mobile
+  const [isOpen, setIsOpen] = useState(false); // Default minimized; user can expand via toggle
 
   return (
     <div
-      className={`bg-blue-400 text-white h-screen-infinite ${
+      className={`bg-white text-blue-400 h-screen-infinite border-r border-gray-200 ${
         isOpen ? "w-64" : "w-16"
       } transition-all duration-300`}
     >
@@ -19,7 +19,7 @@ const Sidebar: React.FC = () => {
         </h2>
         <button
           onClick={() => setIsOpen(!isOpen)}
-          className="p-2 rounded-md hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-300"
+          className="p-2 rounded-md hover:bg-blue-50 focus:outline-none focus:ring-2 focus:ring-blue-400"
           aria-label={isOpen ? "Collapse sidebar" : "Expand sidebar"}
         >
           <svg
@@ -43,7 +43,7 @@ const Sidebar: React.FC = () => {
           <li>
             <Link
               href="/user/dashboard"
-              className="flex items-center p-4 hover:bg-gray-700"
+              className="flex items-center p-4 hover:bg-blue-50"
               aria-label="Go to dashboard"
             >
               <HomeIcon className="w-6 h-6 mr-2" />
@@ -53,7 +53,7 @@ const Sidebar: React.FC = () => {
           <li>
             <Link
               href="/user/events"
-              className="flex items-center p-4 hover:bg-gray-700"
+              className="flex items-center p-4 hover:bg-blue-50"
               aria-label="Go to events"
             >
               <CalendarIcon className="w-6 h-6 mr-2" />
@@ -63,7 +63,7 @@ const Sidebar: React.FC = () => {
           <li>
             <Link
               href="/user/my-events"
-              className="flex items-center p-4 hover:bg-gray-700"
+              className="flex items-center p-4 hover:bg-blue-50"
               aria-label="Go to my events"
             >
               <CalendarIcon className="w-6 h-6 mr-2" />
@@ -73,7 +73,7 @@ const Sidebar: React.FC = () => {
           <li>
             <Link
               href="/user/profile"
-              className="flex items-center p-4 hover:bg-gray-700"
+              className="flex items-center p-4 hover:bg-blue-50"
               aria-label="Go to profile"
             >
               <UserIcon className="w-6 h-6 mr-2" />
@@ -83,7 +83,7 @@ const Sidebar: React.FC = () => {
           <li>
             <Link
               href="/user/logout"
-              className="flex items-center p-4 hover:bg-gray-700"
+              className="flex items-center p-4 hover:bg-blue-50"
               aria-label="Logout"
             >
               <ArrowLeftOnRectangleIcon className="w-6 h-6 mr-2" />

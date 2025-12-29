@@ -45,7 +45,6 @@ export default function DashboardPage() {
 
   return (
     <div className=''>
-      <Header/>
       <div className="flex flex-col min-h-screen">
         <UserNavbar className="mb-0" />
         <div className="flex flex-1">
@@ -86,7 +85,7 @@ export default function DashboardPage() {
             </div>
             <div className="bg-white text-black p-2 rounded-md shadow-md mb-4">
               <h2 className="text-lg font-semibold flex items-center mb-2">
-                <CalendarIcon className="w-6 h-6 mr-2 text-blue-600" />
+                <CalendarIcon className="w-6 h-6 mr-2 text-blue-400" />
                 Upcoming Events
               </h2>
               {loadingEvents ? (
@@ -95,7 +94,7 @@ export default function DashboardPage() {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
                   {events.map((event) => (
                     <div key={event.id} className="p-4 border rounded-md shadow-md hover:shadow-lg transition-shadow">
-                      <h3 className="text-lg font-semibold text-blue-700">{event.title}</h3>
+                      <h3 className="text-lg font-semibold text-blue-400">{event.title}</h3>
                       <p className="text-sm text-gray-600"><strong>Type:</strong> {event.type}</p>
                       <p className="text-sm text-gray-600">
                         <strong>Date:</strong> {new Date(event.date).toLocaleDateString()}

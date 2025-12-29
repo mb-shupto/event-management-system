@@ -8,8 +8,6 @@ import { addDoc, collection, onSnapshot, orderBy, query } from 'firebase/firesto
 import { db } from '@/lib/firebase';
 import { useAuth } from '@/lib/authContext';
 import ProtectedRoute from '@/components/ProtectedRoute';
-import AdminNavbar from '@/components/AdminNavbar';
-import UserNavbar from '@/components/UserNavBar'
 
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend, ArcElement);
@@ -209,7 +207,6 @@ export default function AdminDashboard() {
   return (
     <ProtectedRoute>
       <div className="p-0">
-        <AdminNavbar/>
         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
           <h1 className="text-3xl font-bold">Admin Dashboard</h1>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 w-full md:w-auto">

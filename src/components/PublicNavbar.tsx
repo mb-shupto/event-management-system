@@ -18,7 +18,7 @@ export default function PublicNavbar() {
 
           <div className="hidden md:flex items-center space-x-8">
             <Link href="/" className="text-gray-700 hover:text-blue-400 font-medium">Home</Link>
-            <Link href="/events" className="text-gray-700 hover:text-blue-400 font-medium">All Events</Link>
+            <Link href="/events/recent" className="text-gray-700 hover:text-blue-400 font-medium">Recent Events</Link>
             <Link href="/about" className="text-gray-700 hover:text-blue-400 font-medium">About</Link>
             <Link href="/contact" className="text-gray-700 hover:text-blue-400 font-medium">Contact</Link>
           </div>
