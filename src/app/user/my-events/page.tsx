@@ -1,61 +1,75 @@
-"use client";
+'use client';
 
-import Image from "next/image";
-import LOGO from "../../Logo/logo.png";
-import { useState, useEffect } from "react";
-import { Event } from "@/types/events";
-import { Toast } from "@/components/Toast";
+import { useEffect, useState } from 'react';
+import Link from 'next/link';
+import ProtectedRoute from '@/components/ProtectedRoute';
 
-export default function MyEventsPage() {
-  const [myEvents, setMyEvents] = useState<Event[]>([]);
-  const [loading, setLoading] = useState(true);
+interface SavedEvent {
+  id: number;
+  title: string;
+  date: string;
+  location: string;
+  addedDate: string;
+}
+
+export default function MyEvents() {
+  const [savedEvents, setSavedEvents] = useState<SavedEvent[]>(() => {
+    const saved = localStorage.getItem('myEvents');
+    return saved ? JSON.parse(saved) : [];
+  });
 
   useEffect(() => {
-    setLoading(true);
-    fetch("http://localhost:3001/api/registrations?userId=1") // Mock userId
-      .then((response) => response.json())
-      .then((data) => {
-        setMyEvents(data);
-        setLoading(false);
-      })
-      .catch((error) => {
-        console.error("Error fetching registered events:", error);
-        setLoading(false);
-      });
-  }, []);
+    localStorage.setItem('myEvents', JSON.stringify(savedEvents));
+  }, [savedEvents]);
+
+  const addMockEvent = () => {
+    const newEvent: SavedEvent = {
+      id: Date.now(),
+      title: 'AI Workshop',
+      date: '2025-12-28',
+      location: 'Lab 301',
+      addedDate: new Date().toLocaleDateString(),
+    };
+    setSavedEvents([...savedEvents, newEvent]);
+  };
 
   return (
-    <div className="p-4 bg-gradient-to-r from-green-50 to-white min-h-screen">
-      <div className="mt-4">
-        <div className="mb-6 flex items-center">
-          <Image
-            src={LOGO}
-            alt="Event Management System Logo"
-            width={50}
-            height={50}
-            className="mr-2"
-          />
-          <h1 className="text-3xl font-bold text-gray-900">My Registered Events</h1>
+    <ProtectedRoute>
+      <div>
+        <h1 className="text-3xl font-bold text-white mb-6">My Saved Events</h1>
+        {savedEvents.length === 0 ? (
+          <div className="bg-white p-8 rounded-lg shadow-lg text-center">
+            <Link href="/">
+              <button>Browse Events</button>
+            </Link>
+            <p>You haven&apos;t purchased any tickets yet.</p>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {savedEvents.map((event) => (
+              <div key={event.id} className="bg-white p-6 rounded-xl shadow-xl hover:shadow-2xl transition-shadow">
+                <h2 className="text-2xl font-bold text-blue-400 mb-3">{event.title}</h2>
+                <div className="space-y-2 text-gray-700">
+                  <p><strong>Date:</strong> {event.date}</p>
+                  <p><strong>Location:</strong> {event.location}</p>
+                  <p><strong>Saved on:</strong> {event.addedDate}</p>
+                </div>
+                <button className="mt-6 w-full bg-orange-500 text-white py-2 rounded-lg hover:bg-orange-600">
+                  Buy Ticket
+                </button>
+              </div>
+            ))}
+          </div>
+        )}
+        <div className="mt-10 text-center">
+          <button
+            onClick={addMockEvent}
+            className="bg-green-600 text-white px-8 py-3 rounded-lg hover:bg-green-700 font-medium"
+          >
+            Save Mock Event (Testing)
+          </button>
         </div>
       </div>
-      {loading ? (
-        <p className="text-center text-gray-600">Loading registered events...</p>
-      ) : myEvents.length > 0 ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {myEvents.map((event) => (
-            <div key={event.id} className="p-4 border rounded-md shadow-md bg-white">
-              <h3 className="text-lg font-semibold text-gray-900">{event.title}</h3>
-              <p className="text-gray-600"><strong>Type:</strong> {event.type}</p>
-              <p className="text-gray-600"><strong>Date:</strong> {new Date(event.date).toLocaleDateString()}</p>
-              <p className="text-gray-600"><strong>Time:</strong> {event.time}</p>
-              <p className="text-gray-600"><strong>Location:</strong> {event.location}</p>
-            </div>
-          ))}
-        </div>
-      ) : (
-        <p className="text-center text-gray-600">No registered events found.</p>
-      )}
-      <Toast />
-    </div>
+    </ProtectedRoute>
   );
 }
